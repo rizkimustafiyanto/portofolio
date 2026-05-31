@@ -1,0 +1,65 @@
+scalar Time
+
+type AuditLog {
+  id: ID!
+
+  userId: ID
+
+  action: String!
+
+  entity: String!
+
+  entityId: ID
+
+  ipAddress: String
+
+  requestData: String
+
+  responseData: String
+
+  status: String
+
+  errorMessage: String
+
+  createdAt: Time!
+}
+
+type PaginationMeta {
+  page: Int!
+
+  limit: Int!
+
+  totalData: Int!
+
+  totalPage: Int!
+
+  hasNext: Boolean!
+
+  hasPrevious: Boolean!
+}
+
+type AuditLogPagination {
+  items: [AuditLog!]!
+
+  meta: PaginationMeta!
+}
+
+input AuditFilterInput {
+  page: Int
+
+  limit: Int
+
+  action: String
+
+  entity: String
+
+  status: String
+
+  userId: ID
+}
+
+extend type Query {
+  auditLogs(
+    filter: AuditFilterInput
+  ): AuditLogPagination!
+}

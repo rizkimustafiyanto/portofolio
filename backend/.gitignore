@@ -1,0 +1,38 @@
+# Binaries
+bin/
+tmp/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Build outputs
+*.out
+*.test
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE / editor
+.idea/
+.vscode/
+.DS_Store
+
+# Go
+coverage.out
+*.coverprofile
+
+# Dependency / build caches
+vendor/
+
+# LLM
+.codex/
+.agents/

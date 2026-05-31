@@ -1,0 +1,43 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+input RegisterInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  password: String
+}
+
+type Query {
+  health: Boolean!
+}
+
+directive @auth on FIELD_DEFINITION
+
+type Mutation {
+  register(input: RegisterInput!): User!
+  login(input: LoginInput!): AuthPayload!
+  updateUser(input: UpdateUserInput!): User! @auth
+}
+
+extend type Query {
+  me: User @auth
+}
