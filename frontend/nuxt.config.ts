@@ -1,6 +1,5 @@
 import { resolveRuntimeConfig, resolveServerConfig } from './config/runtime'
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-12-19',
   devtools: { enabled: true },
@@ -38,6 +37,6 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-  server: resolveServerConfig(),
+  devServer: resolveServerConfig(),
   runtimeConfig: resolveRuntimeConfig(),
 })
