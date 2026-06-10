@@ -4,6 +4,7 @@ import (
 	"log"
 
 	backendEnv "backend/pkg/env"
+
 	"github.com/joho/godotenv"
 )
 
@@ -19,6 +20,7 @@ type Env struct {
 	Timezone       string
 	DBMaxOpenConns int
 	DBMaxIdleConns int
+	CORSOrigins    []string
 }
 
 func LoadEnv() *Env {
@@ -40,5 +42,6 @@ func LoadEnv() *Env {
 		Timezone:       backendEnv.GetString("DB_TIMEZONE", "UTC"),
 		DBMaxOpenConns: backendEnv.GetInt("DB_MAX_OPEN_CONNS", 10),
 		DBMaxIdleConns: backendEnv.GetInt("DB_MAX_IDLE_CONNS", 10),
+		CORSOrigins:     backendEnv.GetStringSlice("CORS_ORIGINS", []string{}),
 	}
 }

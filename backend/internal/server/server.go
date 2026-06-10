@@ -13,6 +13,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/rs/cors"
 )
 
 func New(env *config.Env, resolvers generated.ResolverRoot) *http.Server {
@@ -29,12 +30,29 @@ func New(env *config.Env, resolvers generated.ResolverRoot) *http.Server {
 	gqlServer := handler.NewDefaultServer(generated.NewExecutableSchema(cfg))
 
 	mux := http.NewServeMux()
-	mux.Handle("/", playground.Handler("GraphQL", "/query"))
-	mux.Handle("/query", middleware.AuthMiddleware(gqlServer, env.JWTSecret))
+	mux.Handle("/playground", playground.Handler("GraphQL", "/graphql"))
+	mux.Handle("/graphql", middleware.AuthMiddleware(gqlServer, env.JWTSecret))
+
+	c := cors.New(cors.Options{
+		AllowedOrigins: env.CORSOrigins,
+
+		AllowedMethods: []string{
+			http.MethodGet,
+			http.MethodPost,
+			http.MethodOptions,
+		},
+
+		AllowedHeaders: []string{
+			"Authorization",
+			"Content-Type",
+		},
+
+		AllowCredentials: true,
+	})
 
 	return &http.Server{
 		Addr:              ":" + env.AppPort,
-		Handler:           middleware.ActivityMiddleware(mux),
+		Handler:           c.Handler(middleware.ActivityMiddleware(mux)),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 }
