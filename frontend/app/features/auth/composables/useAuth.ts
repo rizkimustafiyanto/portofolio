@@ -1,44 +1,53 @@
 import { AUTH_LOGIN_ROUTE, MANAGEMENT_ROUTE, TOKEN_COOKIE_KEY } from '~/constans'
-import { useAuthService } from '../services/serviceApi'
+import { useAuthService } from '../services/graphql'
 import type { LoginPayload } from "../types/login"
+import { useToast } from '~/composables/useToast'
 
 type UseAuthReturn = {
   login: (payload: LoginPayload) => Promise<void>
-  logout: () => void
+  logout: () => Promise<void>
   fetchMe: () => Promise<void>
 }
 
-export const useAuth = (): UseAuthReturn => {
-  const authService = useAuthService()
-  const store = useAuthStore()
-  const token = useCookie<string | null>(TOKEN_COOKIE_KEY)
+  export const useAuth = (): UseAuthReturn => {
+    const authService = useAuthService()
+    const store = useAuthStore()
+    const token = useCookie<string | null>(TOKEN_COOKIE_KEY)
+    const toast = useToast()
 
-  const login = async (payload: LoginPayload): Promise<void> => {
-    const res = await authService.login(payload)
+    const login = async (payload: LoginPayload) => {
+    try {
+      const res = await authService.login(payload)
 
-    token.value = res.data.token
+      token.value = res.login.token
 
-    store.setAuth({
-      user: res.data.user,
-      token: res.data.token
-    })
+      store.setAuth({
+        user: res.login.user,
+        token: res.login.token,
+      })
 
-    navigateTo(MANAGEMENT_ROUTE)
+      toast.success('Login berhasil')
+
+      await navigateTo(MANAGEMENT_ROUTE)
+    } catch (err) {
+      toast.error(extractGraphqlError(err))
+      return
+    }
   }
 
-  const logout = (): void => {
+  const logout = async (): Promise<void> => {
     token.value = null
     store.clearAuth()
-    navigateTo(AUTH_LOGIN_ROUTE)
+    await navigateTo(AUTH_LOGIN_ROUTE)
   }
 
   const fetchMe = async (): Promise<void> => {
     try {
       const res = await authService.getMe()
-      store.user = res.data.user
+      store.user = res.me
     } catch (error) {
       void error
-      logout()
+      await logout()
     }
   }
 

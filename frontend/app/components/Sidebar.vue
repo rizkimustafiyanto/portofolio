@@ -17,7 +17,12 @@ const store = useAuthStore()
         <NuxtLink :to="MANAGEMENT_ROUTE" class="text-gray-700">Dashboard</NuxtLink>
       </li>
       <li v-if="store.user">
-        <button class="text-red-600" @click="logout">Logout</button>
+        <BaseButton
+          class="text-red-600"
+          @click="logout"
+     >
+          Logout
+        </BaseButton>
       </li>
       <li v-else>
         <NuxtLink :to="AUTH_LOGIN_ROUTE" class="text-blue-600">Login</NuxtLink>

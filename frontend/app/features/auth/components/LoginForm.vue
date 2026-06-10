@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { MANAGEMENT_ROUTE, TOKEN_COOKIE_KEY } from '~/constans'
+import { useSubmitGuard } from '~/composables/useSubmitGuard'
+import { useAuth } from '../composables/useAuth'
 import { loginSchema } from '../schemas/loginSchema'
 import type { LoginForm } from '../schemas/loginSchema'
 
@@ -8,25 +9,21 @@ const form = reactive<LoginForm>({
   password: '',
 })
 
-const { errors, validate } = useZodForm(loginSchema)
-const store = useAuthStore()
-const router = useRouter()
+const { errors, validate } =
+  useZodForm(loginSchema)
 
-const onSubmit = (): void => {
-  const validationErrors = validate(form)
-  if (validationErrors) return
+const { login } = useAuth()
 
-  const token = 'dev-token'
-  useCookie(TOKEN_COOKIE_KEY).value = token
+const { loading, wrap } = useSubmitGuard()
 
-  store.setAuth({
-    user: createDemoUser(form.email),
-    token,
+const onSubmit = async (): Promise<void> => {
+  const isValid = validate(form)
+  if (!isValid) return
+
+  await wrap(async () => {
+    await login(form)
   })
-
-  router.push(MANAGEMENT_ROUTE)
 }
-
 </script>
 
 <template>
@@ -50,8 +47,11 @@ const onSubmit = (): void => {
       :error="errors.password"
     />
 
-    <button type="submit">
+    <BaseButton
+      type="submit"
+      :loading="loading"
+    >
       Login
-    </button>
+    </BaseButton>
   </form>
 </template>

@@ -2,7 +2,7 @@
 import { AUTH_LOGIN_ROUTE, MANAGEMENT_ROUTE } from '~/constans'
 
 definePageMeta({
-  layout: 'portofolio',
+  layout: 'portfolio',
 })
 
 const store = useAuthStore()
@@ -11,8 +11,8 @@ const isLogged = computed(() => !!store.user)
 
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-bold mb-2">Portofolio</h1>
-    <p class="mb-4">This is the portofolio page. Showcase of projects and experience.</p>
+    <h1 class="text-2xl font-bold mb-2">Portfolio</h1>
+    <p class="mb-4">This is the portfolio page. Showcase of projects and experience.</p>
 
     <div class="mt-4">
       <span class="block mb-2">See the management area to edit projects and settings.</span>

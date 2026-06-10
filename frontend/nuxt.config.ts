@@ -8,7 +8,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/eslint',
   ],
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    'vue-sonner/style.css',
+  ],
   typescript: {
     strict: true,
   },

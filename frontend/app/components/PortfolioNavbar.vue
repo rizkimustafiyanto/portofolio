@@ -26,13 +26,12 @@ const isLogged = computed(() => !!store.user)
         Logout
       </button>
 
-      <NuxtLink
+      <BaseButton
         v-else
         :to="AUTH_LOGIN_ROUTE"
-        class="text-sm text-blue-600"
-      >
+        class="text-sm text-green-600">
         Login
-      </NuxtLink>
+      </BaseButton>
     </div>
   </nav>
 </template>
