@@ -19,7 +19,7 @@ export default withNuxt(
       'vue/no-setup-props-reactivity-loss': 'warn',
       'vue/prefer-import-from-vue': 'warn',
 
-      '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/consistent-type-imports': [
         'error',

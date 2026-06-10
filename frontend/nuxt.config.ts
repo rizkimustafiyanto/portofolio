@@ -29,12 +29,15 @@ export default defineNuxtConfig({
   components: [
     {
       path: '~/components',
-      pathPrefix: false,
+      pathPrefix: true,
     },
     {
-      path: '~/features',
-      extensions: ['vue'],
-      pathPrefix: false,
+      path: '~/features/auth/components',
+      prefix: 'Auth',
+    },
+    {
+      path: '~/features/project/components',
+      prefix: 'Project',
     },
   ],
   devServer: resolveServerConfig(),
