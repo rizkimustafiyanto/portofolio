@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { theme } from '~/constans/theme'
 import { useProjectForm } from '../composables/useProjectForm'
 import type { CreateProjectData } from '../schemas/createSchema'
 
@@ -20,12 +21,16 @@ const onSubmit = (): void => {
 
 <template>
   <form
-    class="space-y-4 rounded-xl border bg-white p-6"
+    :class="[
+      'space-y-4 rounded-xl border p-6',
+      theme.colors.surface,
+      'border-black/5 dark:border-white/10',
+    ]"
     @submit.prevent="onSubmit"
   >
     <div>
-      <h3 class="text-lg font-semibold text-gray-900">Create project</h3>
-      <p class="text-sm text-gray-500">
+      <h3 :class="['text-lg font-semibold', theme.colors.text.primary]">Create project</h3>
+      <p :class="['text-sm', theme.colors.text.muted]">
         Keep your portfolio projects organized with a single reusable form.
       </p>
     </div>
@@ -56,20 +61,9 @@ const onSubmit = (): void => {
     />
 
     <div class="flex items-center justify-end gap-3">
-      <button
-        type="button"
-        class="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700"
-        @click="resetForm"
-      >
-        Reset
-      </button>
+      <BaseButton variant="secondary" type="button" @click="resetForm"> Reset </BaseButton>
 
-      <button
-        type="submit"
-        class="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white"
-      >
-        Save project
-      </button>
+      <BaseButton type="submit" variant="primary"> Save project </BaseButton>
     </div>
   </form>
 </template>

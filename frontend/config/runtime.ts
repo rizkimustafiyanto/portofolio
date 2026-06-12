@@ -16,18 +16,16 @@ function readText(value: string | undefined, fallback: string): string {
   return trimmedValue ? trimmedValue : fallback
 }
 
-export function resolveServerConfig(
-  env: RuntimeEnv = process.env,
-): { host: string; port: number } {
+export function resolveServerConfig(env: RuntimeEnv = process.env): { host: string; port: number } {
   return {
     host: readText(env.NITRO_HOST, DEFAULT_NITRO_HOST),
     port: readPort(env.NITRO_PORT ?? env.PORT, DEFAULT_PORT),
   }
 }
 
-export function resolveRuntimeConfig(
-  env: RuntimeEnv = process.env,
-): { public: { apiBase: string } } {
+export function resolveRuntimeConfig(env: RuntimeEnv = process.env): {
+  public: { apiBase: string }
+} {
   const explicitBaseUrl = env.NUXT_PUBLIC_API_BASE?.trim()
 
   return {

@@ -14,9 +14,5 @@
 // }
 
 export const extractGraphqlError = (err: any) => {
-  return (
-    err?.response?.errors?.[0]?.message ||
-    err?.message ||
-    'Terjadi kesalahan'
-  )
+  return err?.response?.errors?.[0]?.message || err?.message || 'Terjadi kesalahan'
 }

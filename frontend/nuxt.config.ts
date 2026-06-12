@@ -3,15 +3,8 @@ import { resolveRuntimeConfig, resolveServerConfig } from './config/runtime'
 export default defineNuxtConfig({
   compatibilityDate: '2024-12-19',
   devtools: { enabled: true },
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    '@nuxt/eslint',
-  ],
-  css: [
-    '~/assets/css/main.css',
-    'vue-sonner/style.css',
-  ],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/eslint'],
+  css: ['~/assets/css/main.css', 'vue-sonner/style.css'],
   typescript: {
     strict: true,
   },
@@ -27,6 +20,7 @@ export default defineNuxtConfig({
       'app/features/auth/composables',
       'app/features/auth/services',
       'app/features/project/composables',
+      'app/features/welcome/composables',
     ],
   },
   components: [
@@ -42,7 +36,33 @@ export default defineNuxtConfig({
       path: '~/features/project/components',
       prefix: 'Project',
     },
+    {
+      path: '~/features/portfolio/components',
+      prefix: 'Portfolio',
+    },
+    {
+      path: '~/features/welcome/components',
+      prefix: 'Welcome',
+    },
   ],
   devServer: resolveServerConfig(),
   runtimeConfig: resolveRuntimeConfig(),
+  app: {
+    head: {
+      title: 'Portfolio',
+      meta: [
+        {
+          name: 'description',
+          content: 'My personal portfolio built with Nuxt 4 and Tailwind CSS.',
+        },
+      ],
+    },
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
+  },
+  experimental: {
+    viewTransition: true,
+  },
 })

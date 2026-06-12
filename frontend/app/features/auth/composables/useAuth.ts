@@ -1,6 +1,6 @@
 import { AUTH_LOGIN_ROUTE, MANAGEMENT_ROUTE, TOKEN_COOKIE_KEY } from '~/constans'
 import { useAuthService } from '../services/graphql'
-import type { LoginPayload } from "../types/login"
+import type { LoginPayload } from '../types/login'
 import { useToast } from '~/composables/useToast'
 
 type UseAuthReturn = {
@@ -9,13 +9,13 @@ type UseAuthReturn = {
   fetchMe: () => Promise<void>
 }
 
-  export const useAuth = (): UseAuthReturn => {
-    const authService = useAuthService()
-    const store = useAuthStore()
-    const token = useCookie<string | null>(TOKEN_COOKIE_KEY)
-    const toast = useToast()
+export const useAuth = (): UseAuthReturn => {
+  const authService = useAuthService()
+  const store = useAuthStore()
+  const token = useCookie<string | null>(TOKEN_COOKIE_KEY)
+  const toast = useToast()
 
-    const login = async (payload: LoginPayload) => {
+  const login = async (payload: LoginPayload) => {
     try {
       const res = await authService.login(payload)
 

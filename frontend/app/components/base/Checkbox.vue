@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { animation } from '~/constans/animation'
+import { theme } from '~/constans/theme'
+
 interface Props {
   modelValue: boolean
 
@@ -15,16 +18,12 @@ defineEmits<{
 
 <template>
   <BaseFormField :error="error">
-    <label class="flex items-center gap-2">
+    <label :class="['flex items-center gap-2', animation.duration.normal]">
       <input
         type="checkbox"
         :checked="modelValue"
-        @change="
-          $emit(
-            'update:modelValue',
-            ($event.target as HTMLInputElement).checked
-          )
-        "
+        :class="theme.colors.surface"
+        @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
       >
 
       <span>

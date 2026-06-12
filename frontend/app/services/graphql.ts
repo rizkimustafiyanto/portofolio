@@ -7,21 +7,15 @@ export const useGraphqlClient = () => {
   const token = useCookie<string | null>(TOKEN_COOKIE_KEY)
   const ui = useUiStore()
 
-  const client = new GraphQLClient(
-    `${config.public.apiBase}/graphql`,
-    {
-      headers: token.value
-        ? {
-            Authorization: `Bearer ${token.value}`,
-          }
-        : {},
-    },
-  )
-  
-  const request = async <T>(
-    query: string,
-    variables?: any,
-  ): Promise<T> => {
+  const client = new GraphQLClient(`${config.public.apiBase}/graphql`, {
+    headers: token.value
+      ? {
+          Authorization: `Bearer ${token.value}`,
+        }
+      : {},
+  })
+
+  const request = async <T>(query: string, variables?: any): Promise<T> => {
     ui.startLoading()
 
     try {

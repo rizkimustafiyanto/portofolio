@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { animation } from '~/constans/animation'
+import { theme } from '~/constans/theme'
+
 interface Props {
   modelValue: string
 
@@ -14,18 +17,15 @@ interface Props {
   required?: boolean
 }
 
-withDefaults(
-  defineProps<Props>(),
-  {
-    rows: 4,
-    placeholder: '',
-    disabled: false,
-    readonly: false,
-    label: '',
-    error: '',
-    helperText: '',
-  },
-)
+withDefaults(defineProps<Props>(), {
+  rows: 4,
+  placeholder: '',
+  disabled: false,
+  readonly: false,
+  label: '',
+  error: '',
+  helperText: '',
+})
 
 defineEmits<{
   'update:modelValue': [value: string]
@@ -33,12 +33,7 @@ defineEmits<{
 </script>
 
 <template>
-  <BaseFormField
-    :label="label"
-    :error="error"
-    :required="required"
-    :helper-text="helperText"
-  >
+  <BaseFormField :label="label" :error="error" :required="required" :helper-text="helperText">
     <textarea
       :value="modelValue"
       :rows="rows"
@@ -47,16 +42,12 @@ defineEmits<{
       :readonly="readonly"
       :class="[
         'w-full rounded-lg border px-3 py-2 outline-none transition',
+        animation.duration.normal,
         error
           ? 'border-red-500'
-          : 'border-gray-300 focus:border-blue-500',
+          : `${theme.colors.surface} border-black/10 focus:border-slate-400 dark:focus:border-slate-500`,
       ]"
-      @input="
-        $emit(
-          'update:modelValue',
-          ($event.target as HTMLTextAreaElement).value
-        )
-      "
+      @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
     />
   </BaseFormField>
 </template>

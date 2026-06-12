@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { PORTOFOLIO_ROUTE } from '~/constans'
-
-definePageMeta({
-  layout: 'default',
+onMounted(async () => {
+  await navigateTo('/welcome')
 })
 </script>
-
 <template>
-  <NuxtLink :to="PORTOFOLIO_ROUTE">
-    Go to Portofolio
-  </NuxtLink>
+  <div/>
 </template>

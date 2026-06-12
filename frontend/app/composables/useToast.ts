@@ -2,13 +2,10 @@ export const useToast = () => {
   const nuxtApp = useNuxtApp()
 
   return {
-    success: (msg: string) =>
-      nuxtApp.$toast.success(msg),
+    success: (msg: string) => nuxtApp.$toast.success(msg),
 
-    error: (msg: string) =>
-      nuxtApp.$toast.error(msg),
+    error: (msg: string) => nuxtApp.$toast.error(msg),
 
-    info: (msg: string) =>
-      nuxtApp.$toast.info(msg),
+    info: (msg: string) => nuxtApp.$toast.info(msg),
   }
 }

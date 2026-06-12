@@ -1,4 +1,4 @@
-import type { LoginResponse, User } from "./login";
+import type { LoginResponse, User } from './login'
 
 export interface LoginMutationResponse {
   login: LoginResponse

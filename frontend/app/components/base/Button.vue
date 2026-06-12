@@ -1,19 +1,18 @@
 <script setup lang="ts">
+import { animation } from '~/constans/animation'
+import { theme } from '~/constans/theme'
 import type { RouteLocationRaw } from 'vue-router'
 
-type Variant =
-  | 'primary'
-  | 'secondary'
-  | 'danger'
-  | 'ghost'
+type Variant = 'primary' | 'secondary' | 'danger' | 'ghost'
 
 type Type = 'button' | 'submit' | 'reset'
 
 interface Props {
   type?: Type
   to?: RouteLocationRaw
-  
+
   variant?: Variant
+  override?: string
 
   disabled?: boolean
   loading?: boolean
@@ -25,27 +24,34 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   loading: false,
   to: undefined,
+  override: undefined,
 })
 
 const emit = defineEmits<{
   click: [Event]
 }>()
 
-const isDisabled = computed(() =>
-  props.disabled || props.loading,
-)
+const isDisabled = computed(() => props.disabled || props.loading)
 
 const isNavigating = ref(false)
 
+const buttonBaseClass = [
+  'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition',
+  animation.duration.normal,
+  animation.easing.smooth,
+]
+
 const variantClass = computed(() => {
   const map: Record<string, string> = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700',
-    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+    primary: `${theme.colors.surface} ${theme.colors.text.primary} hover:brightness-95`,
+    secondary:
+      'bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/15',
     danger: 'bg-red-600 text-white hover:bg-red-700',
-    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100',
+    ghost:
+      'bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/5',
   }
 
-  return map[props.variant] || map.primary
+  return props.override || map[props.variant] || map['primary']
 })
 
 const handleClick = (e: Event) => {
@@ -63,20 +69,15 @@ const handleClick = (e: Event) => {
 </script>
 
 <template>
-  <!-- LINK MODE -->
   <NuxtLink
     v-if="to"
     :to="to"
-    :class="[
-      'inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition',
-      variantClass,
-      isDisabled && 'pointer-events-none opacity-60',
-    ]"
+    :class="[buttonBaseClass, variantClass, isDisabled && 'pointer-events-none opacity-60']"
     @click="handleClick"
   >
     <svg
       v-if="loading || isNavigating"
-      class="w-4 h-4 animate-spin"
+      :class="['h-4 w-4 animate-spin', animation.duration.instant]"
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -91,16 +92,12 @@ const handleClick = (e: Event) => {
     v-else
     :type="type"
     :disabled="isDisabled"
-    :class="[
-      'inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition',
-      variantClass,
-      isDisabled && 'pointer-events-none opacity-60',
-    ]"
+    :class="[buttonBaseClass, variantClass, isDisabled && 'pointer-events-none opacity-60']"
     @click="handleClick"
   >
     <svg
       v-if="loading"
-      class="w-4 h-4 animate-spin"
+      :class="['h-4 w-4 animate-spin', animation.duration.instant]"
       viewBox="0 0 24 24"
       fill="none"
     >

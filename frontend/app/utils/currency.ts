@@ -38,4 +38,3 @@ export function formatNumber(
 
   return new Intl.NumberFormat(locale, options).format(numericValue)
 }
-

@@ -1,37 +1,62 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { AUTH_LOGIN_ROUTE, HOME_ROUTE, MANAGEMENT_ROUTE } from '~/constans'
-import { useAuth } from '~/features/auth/composables/useAuth'
+import { animation } from '~/constans/animation'
+import { theme } from '~/constans/theme'
 
-const store = useAuthStore()
-const { logout } = useAuth()
-
-const isLogged = computed(() => !!store.user)
+const links = [
+  {
+    label: 'About',
+    href: '#about',
+  },
+  {
+    label: 'Projects',
+    href: '#projects',
+  },
+  {
+    label: 'Experience',
+    href: '#experience',
+  },
+  {
+    label: 'Stack',
+    href: '#tech-stack',
+  },
+  {
+    label: 'Contact',
+    href: '#contact',
+  },
+]
 </script>
 
 <template>
-  <nav class="w-full bg-white border-b p-4 flex items-center justify-between">
-    <div class="flex items-center gap-4">
-      <NuxtLink :to="HOME_ROUTE" class="font-bold text-lg">My Portfolio</NuxtLink>
-      <NuxtLink :to="HOME_ROUTE" class="text-sm text-gray-600">Home</NuxtLink>
-      <NuxtLink :to="MANAGEMENT_ROUTE" class="text-sm text-gray-600">Management</NuxtLink>
-    </div>
-
-    <div>
-      <button
-        v-if="isLogged"
-        class="text-sm text-red-600"
-        @click="logout"
+  <nav
+    :class="[
+      'sticky top-0 z-50 w-full border-b px-4 py-4 backdrop-blur-xl md:px-6',
+      theme.colors.surface,
+      animation.duration.normal,
+      'border-black/5 dark:border-white/10',
+    ]"
+  >
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-6">
+      <a
+        href="#hero"
+        :class="['text-lg font-semibold tracking-tight', theme.colors.text.primary]"
       >
-        Logout
-      </button>
+        My Portfolio
+      </a>
 
-      <BaseButton
-        v-else
-        :to="AUTH_LOGIN_ROUTE"
-        class="text-sm text-green-600">
-        Login
-      </BaseButton>
+      <div class="flex flex-wrap items-center justify-end gap-2 md:gap-3">
+        <a
+          v-for="link in links"
+          :key="link.href"
+          :href="link.href"
+          :class="[
+            'rounded-full border border-border/70 px-3 py-2 text-sm transition hover:bg-background/80',
+            theme.colors.text.secondary,
+            animation.duration.normal,
+          ]"
+        >
+          {{ link.label }}
+        </a>
+      </div>
     </div>
   </nav>
 </template>
