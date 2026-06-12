@@ -12,9 +12,6 @@ const { page } = useThemeClasses()
     <div class="relative z-10">
       <WelcomeHeroSection />
     </div>
-
-    <div class="pb-10">
-      <WelcomeScrollIndicator />
-    </div>
+    <CommonThemeToggle class="fixed top-10 right-6 z-10" />
   </main>
 </template>

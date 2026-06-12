@@ -61,9 +61,9 @@ const onSubmit = (): void => {
     />
 
     <div class="flex items-center justify-end gap-3">
-      <BaseButton variant="secondary" type="button" @click="resetForm"> Reset </BaseButton>
+      <BaseButton variant="text" type="button" @click="resetForm"> Reset </BaseButton>
 
-      <BaseButton type="submit" variant="primary"> Save project </BaseButton>
+      <BaseButton type="submit" variant="filled"> Save project </BaseButton>
     </div>
   </form>
 </template>

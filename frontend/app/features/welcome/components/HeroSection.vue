@@ -35,7 +35,7 @@ const buttonClass = computed(() => [
 
       <div class="h-8" />
       <p :class="['mb-6 text-sm font-medium uppercase tracking-[0.35em]', theme.colors.accent]">
-        Frontend Developer
+        Full Stack Developer
       </p>
 
       <h1

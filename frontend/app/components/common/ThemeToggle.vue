@@ -10,10 +10,10 @@ const isDark = computed(() => colorMode.value === 'dark')
 <template>
   <button
     :class="[
-      'fixed right-6 top-6 z-50 inline-flex items-center gap-2 rounded-full border px-4 py-3 backdrop-blur-xl transition-all hover:-translate-y-0.5 hover:shadow-lg',
+      'inline-flex h-10 items-center gap-2 rounded-full border border-border/70 px-3 text-sm transition hover:bg-background/80 hover:-translate-y-0.5 hover:shadow-lg md:px-4',
       isDark
-        ? 'border-slate-700 bg-slate-900/85 text-white'
-        : 'border-slate-200/80 bg-white/85 text-slate-900',
+        ? 'bg-slate-900/85 text-white dark:bg-slate-900/85'
+        : 'bg-white/85 text-slate-900 dark:bg-white/5',
       animation.duration.normal,
     ]"
     aria-label="Toggle theme"
@@ -21,7 +21,7 @@ const isDark = computed(() => colorMode.value === 'dark')
     :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
     @click="toggleTheme"
   >
-    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         v-if="isDark"
         stroke-linecap="round"

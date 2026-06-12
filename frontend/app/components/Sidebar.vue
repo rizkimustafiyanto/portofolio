@@ -29,7 +29,7 @@ const store = useAuthStore()
         >
       </li>
       <li v-if="store.user">
-        <BaseButton variant="danger" @click="logout"> Logout </BaseButton>
+        <BaseButton variant="text" tone="danger" @click="logout"> Logout </BaseButton>
       </li>
       <li v-else>
         <NuxtLink :to="AUTH_LOGIN_ROUTE" class="text-blue-600 dark:text-sky-400">Login</NuxtLink>

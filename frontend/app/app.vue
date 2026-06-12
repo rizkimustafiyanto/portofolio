@@ -27,10 +27,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <CommonThemeToggle />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+
+  <CommonScrollIndicator mode="next" />
+  <CommonScrollIndicator mode="top" label="Top" />
 
   <ClientOnly>
     <Toaster position="top-right" rich-colors close-button expand />

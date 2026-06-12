@@ -24,7 +24,7 @@ defineEmits<{
         :checked="modelValue"
         :class="theme.colors.surface"
         @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
-      >
+      />
 
       <span>
         {{ label }}

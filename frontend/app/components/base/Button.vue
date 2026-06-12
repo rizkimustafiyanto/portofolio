@@ -3,7 +3,8 @@ import { animation } from '~/constans/animation'
 import { theme } from '~/constans/theme'
 import type { RouteLocationRaw } from 'vue-router'
 
-type Variant = 'primary' | 'secondary' | 'danger' | 'ghost'
+type Variant = 'filled' | 'text'
+type Tone = 'default' | 'danger'
 
 type Type = 'button' | 'submit' | 'reset'
 
@@ -12,6 +13,7 @@ interface Props {
   to?: RouteLocationRaw
 
   variant?: Variant
+  tone?: Tone
   override?: string
 
   disabled?: boolean
@@ -20,7 +22,8 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'button',
-  variant: 'primary',
+  variant: 'filled',
+  tone: 'default',
   disabled: false,
   loading: false,
   to: undefined,
@@ -36,22 +39,24 @@ const isDisabled = computed(() => props.disabled || props.loading)
 const isNavigating = ref(false)
 
 const buttonBaseClass = [
-  'inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition',
+  'inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition',
   animation.duration.normal,
   animation.easing.smooth,
 ]
 
 const variantClass = computed(() => {
-  const map: Record<string, string> = {
-    primary: `${theme.colors.surface} ${theme.colors.text.primary} hover:brightness-95`,
-    secondary:
-      'bg-slate-200 text-slate-900 hover:bg-slate-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/15',
-    danger: 'bg-red-600 text-white hover:bg-red-700',
-    ghost:
-      'bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/5',
+  const map: Record<Variant, Record<Tone, string>> = {
+    filled: {
+      default: theme.colors.button.filled,
+      danger: theme.colors.button.dangerFilled,
+    },
+    text: {
+      default: theme.colors.button.text,
+      danger: theme.colors.button.dangerText,
+    },
   }
 
-  return props.override || map[props.variant] || map['primary']
+  return props.override || map[props.variant][props.tone]
 })
 
 const handleClick = (e: Event) => {

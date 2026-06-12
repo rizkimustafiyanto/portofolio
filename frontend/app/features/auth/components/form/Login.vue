@@ -37,6 +37,6 @@ const onSubmit = async (): Promise<void> => {
       :error="errors.password"
     />
 
-    <BaseButton type="submit" :loading="loading"> Login </BaseButton>
+    <BaseButton type="submit" :loading="loading" variant="filled"> Login </BaseButton>
   </form>
 </template>
