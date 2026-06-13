@@ -41,6 +41,10 @@ export default defineNuxtConfig({
       prefix: 'Portfolio',
     },
     {
+      path: '~/features/management/components',
+      prefix: 'Management',
+    },
+    {
       path: '~/features/welcome/components',
       prefix: 'Welcome',
     },
