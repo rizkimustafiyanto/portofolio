@@ -12,7 +12,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="space-y-1">
+  <div class="relative space-y-1">
     <label v-if="label" :class="['block text-sm font-medium', theme.colors.text.secondary]">
       {{ label }}
 
@@ -25,7 +25,7 @@ defineProps<Props>()
       {{ helperText }}
     </p>
 
-    <p v-if="error" class="text-sm text-red-500">
+    <p v-if="error" class="text-xs text-red-500">
       {{ error }}
     </p>
   </div>

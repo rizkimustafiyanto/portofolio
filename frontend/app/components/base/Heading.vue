@@ -41,7 +41,7 @@ withDefaults(defineProps<Props>(), {
 
     <p
       v-if="description"
-      :class="['mx-auto mt-6 max-w-2xl', theme.colors.text.secondary, animation.duration.normal]"
+      :class="['mx-auto mt-6 max-w-2xl text-sm', theme.colors.text.secondary, animation.duration.normal]"
     >
       {{ description }}
     </p>

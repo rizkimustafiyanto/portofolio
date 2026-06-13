@@ -1,10 +1,11 @@
 export const theme = {
   colors: {
-    background: 'bg-stone-50 dark:bg-slate-950',
-    surface: 'bg-white/70 dark:bg-white/[0.03]',
+    background:
+      'bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.12),_transparent_28%),linear-gradient(180deg,_#fafaf9_0%,_#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.08),_transparent_28%),linear-gradient(180deg,_#020617_0%,_#0f172a_100%)]',
+    surface: 'bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl',
     border: 'border-black/5 dark:border-white/10',
     accent: 'text-amber-700 dark:text-amber-300',
-    accentSurface: 'bg-amber-100/50 dark:bg-amber-500/10',
+    accentSurface: 'bg-amber-100/60 dark:bg-amber-500/10',
     button: {
       filled:
         'rounded-full border border-slate-950/5 bg-slate-950 text-white shadow-[0_12px_28px_-16px_rgba(15,23,42,0.65)] hover:bg-slate-800 dark:border-white/10 dark:bg-white dark:text-slate-950 dark:shadow-[0_12px_28px_-16px_rgba(255,255,255,0.18)] dark:hover:bg-slate-100',
@@ -16,7 +17,7 @@ export const theme = {
     },
 
     text: {
-      primary: 'text-slate-900 dark:text-white',
+      primary: 'text-slate-800 dark:text-slate-50',
       secondary: 'text-slate-600 dark:text-slate-300',
       muted: 'text-slate-400 dark:text-slate-500',
     },

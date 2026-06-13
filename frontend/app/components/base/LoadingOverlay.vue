@@ -13,7 +13,7 @@ const ui = useUiStore()
   >
     <div
       :class="[
-        'flex items-center gap-3 rounded-lg px-6 py-4',
+        'flex items-center gap-3 rounded-xl px-6 py-4',
         theme.colors.surface,
         animation.duration.normal,
       ]"

@@ -15,6 +15,7 @@ interface Props {
   variant?: Variant
   tone?: Tone
   override?: string
+  addStyle?: string
 
   disabled?: boolean
   loading?: boolean
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   to: undefined,
   override: undefined,
+  addStyle: ''
 })
 
 const emit = defineEmits<{
@@ -39,7 +41,7 @@ const isDisabled = computed(() => props.disabled || props.loading)
 const isNavigating = ref(false)
 
 const buttonBaseClass = [
-  'inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition',
+  'inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition',
   animation.duration.normal,
   animation.easing.smooth,
 ]
@@ -77,7 +79,7 @@ const handleClick = (e: Event) => {
   <NuxtLink
     v-if="to"
     :to="to"
-    :class="[buttonBaseClass, variantClass, isDisabled && 'pointer-events-none opacity-60']"
+    :class="[buttonBaseClass, addStyle, variantClass, isDisabled && 'pointer-events-none opacity-60']"
     @click="handleClick"
   >
     <svg
@@ -97,7 +99,7 @@ const handleClick = (e: Event) => {
     v-else
     :type="type"
     :disabled="isDisabled"
-    :class="[buttonBaseClass, variantClass, isDisabled && 'pointer-events-none opacity-60']"
+    :class="[buttonBaseClass, addStyle, variantClass, isDisabled && 'pointer-events-none opacity-60']"
     @click="handleClick"
   >
     <svg
