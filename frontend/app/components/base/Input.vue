@@ -10,11 +10,7 @@ interface Props {
   placeholder?: string
   disabled?: boolean
   readonly?: boolean
-
-  label?: string
   error?: string
-  helperText?: string
-  required?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
@@ -22,9 +18,7 @@ withDefaults(defineProps<Props>(), {
   disabled: false,
   readonly: false,
   placeholder: '',
-  label: '',
   error: '',
-  helperText: '',
 })
 
 defineEmits<{
@@ -33,21 +27,19 @@ defineEmits<{
 </script>
 
 <template>
-  <BaseFormField :label="label" :error="error" :required="required" :helper-text="helperText">
-    <input
-      :type="type"
-      :value="modelValue"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :readonly="readonly"
-      :class="[
-        'w-full rounded-lg border px-3 py-2 outline-none transition',
-        animation.duration.normal,
-        error
-          ? 'border-red-500'
-          : `${theme.colors.surface} border-black/10 focus:border-slate-400 dark:focus:border-slate-500`,
-      ]"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
-  </BaseFormField>
+  <input
+    :type="type"
+    :value="modelValue"
+    :placeholder="placeholder"
+    :disabled="disabled"
+    :readonly="readonly"
+    :class="[
+      'w-full rounded-lg border px-3 py-2 outline-none transition',
+      animation.duration.normal,
+      error
+        ? 'border-red-500'
+        : `${theme.colors.surface} border-black/10 focus:border-slate-400 dark:focus:border-slate-500`,
+    ]"
+    @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+  >
 </template>
