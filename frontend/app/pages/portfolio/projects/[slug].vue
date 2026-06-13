@@ -20,10 +20,14 @@ if (!project) {
 
 <template>
   <BaseSection override="mx-auto max-w-5xl px-6">
-    <PortfolioProjectsCaseStudy :project="project" />
-    <PortfolioProjectsProblem :problem="project.case.problem" />
+    <PortfolioProjectsGallery v-if="project.gallery" :gallery="project.gallery" />
+    <PortfolioProjectsCaseStudy v-if="project" :project="project" />
+    <PortfolioProjectsProblem v-if="project.case.problem" :problem="project.case.problem" />
 
-    <PortfolioProjectsResponsibilities :responsibilities="project.case.responsibilities" />
+    <PortfolioProjectsResponsibilities
+      v-if="project.case.responsibilities"
+      :responsibilities="project.case.responsibilities"
+    />
 
     <PortfolioProjectsSolutions :solution="project.case.solution" />
 

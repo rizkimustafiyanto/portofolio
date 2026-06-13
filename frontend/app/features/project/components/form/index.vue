@@ -35,30 +35,22 @@ const onSubmit = (): void => {
       </p>
     </div>
 
-    <BaseInput
-      v-model="form.name"
-      label="Project name"
-      placeholder="My Awesome App"
-      required
-      :error="errors.name"
-    />
+    <BaseFormField label="Project name" required :error="errors.name">
+      <BaseInput v-model="form.name" placeholder="My Awesome App" />
+    </BaseFormField>
 
-    <BaseTextArea
-      v-model="form.description"
-      label="Description"
-      placeholder="Describe what the project does..."
-      required
-      :error="errors.description"
-    />
+    <BaseFormField label="Description" required :error="errors.description">
+      <BaseTextArea v-model="form.description" placeholder="Describe what the project does..." />
+    </BaseFormField>
 
-    <BaseInput
-      v-model="form.link"
+    <BaseFormField
       label="Project link"
-      placeholder="myawesomeapp.com"
       required
       :error="errors.link"
       helper-text="You can paste a full URL or just a domain."
-    />
+    >
+      <BaseInput v-model="form.link" placeholder="myawesomeapp.com" />
+    </BaseFormField>
 
     <div class="flex items-center justify-end gap-3">
       <BaseButton variant="text" type="button" @click="resetForm"> Reset </BaseButton>

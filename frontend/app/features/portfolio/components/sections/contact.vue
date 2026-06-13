@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { MANAGEMENT_ROUTE } from '~/constans'
+
+const resume = '/resume/cv.pdf'
+</script>
+
 <template>
   <BaseSection
     id="contact"
@@ -23,8 +29,8 @@
       </p>
 
       <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <a href="mailto:hello@portfolio.dev" class="rounded-full border border-border/70 px-5 py-3">
-          hello@portfolio.dev
+        <a :href="resume" class="rounded-full border border-border/70 px-5 py-3" download>
+          Resume
         </a>
 
         <a
@@ -40,6 +46,20 @@
         >
           LinkedIn
         </a>
+      </div>
+
+      <div class="mt-8 text-sm text-muted-foreground">
+        <BaseButton
+          :to="MANAGEMENT_ROUTE"
+          override="inline-flex items-center gap-2 transition hover:text-foreground"
+        >
+          <span
+            class="transition-transform duration-300 group-hover:translate-x-1"
+            aria-hidden="true"
+            >→</span
+          >
+          Management
+        </BaseButton>
       </div>
     </div>
   </BaseSection>
