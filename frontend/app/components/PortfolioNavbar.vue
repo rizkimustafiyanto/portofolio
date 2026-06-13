@@ -2,6 +2,9 @@
 import { animation } from '~/constans/animation'
 import { theme } from '~/constans/theme'
 
+const route = useRoute()
+const isProjectDetailPage = computed(() => route.path.startsWith('/portfolio/projects/'))
+
 const links = [
   {
     label: 'About',
@@ -41,7 +44,20 @@ const links = [
       </a>
 
       <div class="flex items-center gap-2 md:gap-3">
-        <div class="hidden flex-wrap items-center justify-end gap-2 md:flex md:gap-3">
+        <a
+          v-if="isProjectDetailPage"
+          href="/portfolio#projects"
+          :class="[
+            'inline-flex h-10 items-center rounded-full border border-border/70 px-4 text-sm transition hover:bg-background/80',
+            theme.colors.text.secondary,
+            animation.duration.normal,
+          ]"
+        >
+          <span aria-hidden="true" class="mr-2">&larr;</span>
+          Back to projects
+        </a>
+
+        <div v-else class="hidden flex-wrap items-center justify-end gap-2 md:flex md:gap-3">
           <a
             v-for="link in links"
             :key="link.href"

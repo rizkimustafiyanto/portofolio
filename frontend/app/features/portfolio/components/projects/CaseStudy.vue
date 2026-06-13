@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <BaseSection override="mx-auto max-w-5xl px-6 py-24">
+  <BaseSection override="mx-auto max-w-5xl px-6 py-14">
     <div class="text-sm tracking-[0.3em] text-muted-foreground">CASE STUDY</div>
 
     <h1 class="mt-6 text-5xl font-light md:text-7xl">
