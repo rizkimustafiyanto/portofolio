@@ -1,5 +1,5 @@
-import { projectDetails } from './projectDetails'
-import type { Project } from '../types/projects'
+import { projectDetails } from './project-details'
+import type { Project } from '../types/project'
 
 const baseProjects = [
   {

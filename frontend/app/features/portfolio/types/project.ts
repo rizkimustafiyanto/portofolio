@@ -6,6 +6,7 @@ export interface Project {
   tags: string[]
   role: string
   duration: string
+  gallery: ProjectGallery[]
   case: ProjectCase
 }
 
@@ -14,4 +15,10 @@ export interface ProjectCase {
   responsibilities: string[]
   solution: string
   results: string[]
+}
+
+export interface ProjectGallery {
+  image_url: string
+  title: string
+  description: string
 }

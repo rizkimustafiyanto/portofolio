@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { animation } from '~/constans/animation'
 import { theme } from '~/constans/theme'
-import { useEntrance } from '../composables/useEntrance'
-import { useTheme } from '../composables/useTheme'
+import { useEntrance } from '../../composables/useEntrance'
+import { useTheme } from '../../composables/useTheme'
 
 const navigatePortfolio = () => {
   navigateTo('/portfolio')
@@ -31,7 +31,7 @@ const buttonClass = computed(() => [
         visible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0',
       ]"
     >
-      <WelcomeHeroBadge />
+      <WelcomeSectionsHeroBadge />
 
       <div class="h-8" />
       <p :class="['mb-6 text-sm font-medium uppercase tracking-[0.35em]', theme.colors.accent]">

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useSubmitGuard } from '~/composables/useSubmitGuard'
 import { useAuth } from '../../composables/useAuth'
-import { loginSchema } from '../../schemas/loginSchema'
-import type { LoginForm } from '../../schemas/loginSchema'
+import { loginSchema } from '../../schemas/login-schema'
+import type { LoginForm } from '../../schemas/login-schema'
 
 const form = reactive<LoginForm>({
   email: '',

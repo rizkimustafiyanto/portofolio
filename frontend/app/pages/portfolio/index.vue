@@ -10,14 +10,14 @@ definePageMeta({
   >
     <Portfolio />
 
-    <PortfolioAbout />
+    <PortfolioSectionsAbout />
 
     <PortfolioProjects />
 
-    <PortfolioExperience />
+    <PortfolioSectionsExperience />
 
-    <PortfolioTechStack />
+    <PortfolioSectionsTechStack />
 
-    <PortfolioContact />
+    <PortfolioSectionsContact />
   </main>
 </template>

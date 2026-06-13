@@ -6,11 +6,11 @@ const { page } = useThemeClasses()
 
 <template>
   <main :class="['relative min-h-screen overflow-hidden transition-colors duration-300', page]">
-    <WelcomeIntroScreen />
-    <WelcomeHeroBackground />
+    <WelcomeSectionsIntroScreen />
+    <WelcomeSectionsHeroBackground />
 
     <div class="relative z-10">
-      <WelcomeHeroSection />
+      <WelcomeSectionsHeroSection />
     </div>
     <CommonThemeToggle class="fixed top-10 right-6 z-10" />
   </main>

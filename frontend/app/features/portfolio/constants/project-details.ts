@@ -1,4 +1,4 @@
-import type { ProjectCase } from '../types/projects'
+import type { ProjectCase } from '../types/project'
 
 export const projectDetails: Record<string, ProjectCase> = {
   'amms-dashboard': {

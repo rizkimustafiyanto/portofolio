@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { animation } from '~/constans/animation'
 import { theme } from '~/constans/theme'
-import { useMouseParallax } from '../composables/useMouseParallax'
+import { useMouseParallax } from '../../composables/useMouseParallax'
 
 const { x, y } = useMouseParallax()
 </script>

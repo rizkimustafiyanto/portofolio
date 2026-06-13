@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { theme } from '~/constans/theme'
-import { useProjectForm } from '../composables/useProjectForm'
-import type { CreateProjectData } from '../schemas/createSchema'
+import { useProjectForm } from '../../../composables/useProjectForm'
+import type { CreateProjectData } from '../../../schemas/create-schema'
 
 const emit = defineEmits<{
   submit: [payload: CreateProjectData]

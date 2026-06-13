@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import type { Ref } from 'vue'
-import { createProjectSchema, type CreateProjectData } from '../schemas/createSchema'
+import { createProjectSchema, type CreateProjectData } from '../schemas/create-schema'
 
 type UseProjectFormReturn = {
   form: CreateProjectData
