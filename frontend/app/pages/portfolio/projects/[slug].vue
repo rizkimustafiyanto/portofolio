@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { useProjects } from '~/features/portfolio/composables/useProjects'
 
-definePageMeta({
-  layout: 'portfolio',
-})
-
 const route = useRoute()
 const { getProjectBySlug } = useProjects()
 

@@ -2,7 +2,11 @@ import { AUTH_LOGIN_ROUTE, TOKEN_COOKIE_KEY } from '~/constans'
 import { useAuth } from '~/features/auth/composables/useAuth'
 import { useUiStore } from '~/stores/ui.store'
 
-export default defineNuxtRouteMiddleware(async () => {
+export default defineNuxtRouteMiddleware(async (to) => {
+  if (!to.path.startsWith('/management')) {
+    return
+  }
+
   const token = useCookie(TOKEN_COOKIE_KEY).value
   const store = useAuthStore()
   const ui = useUiStore()
