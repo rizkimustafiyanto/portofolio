@@ -41,5 +41,5 @@ defineEmits<{
         : `${theme.colors.surface} border-black/10 focus:border-slate-400 dark:focus:border-slate-500`,
     ]"
     @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-  >
+  />
 </template>

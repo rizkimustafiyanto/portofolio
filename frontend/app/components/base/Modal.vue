@@ -108,7 +108,9 @@ onUnmounted(() => {
             animation.duration.normal,
           ]"
         >
-          <div class="flex items-start justify-between gap-4 border-b border-black/5 px-6 py-5 dark:border-white/10">
+          <div
+            class="flex items-start justify-between gap-4 border-b border-black/5 px-6 py-5 dark:border-white/10"
+          >
             <div class="space-y-1">
               <h2 v-if="title" :class="['text-lg font-semibold', theme.colors.text.primary]">
                 {{ title }}
@@ -126,7 +128,13 @@ onUnmounted(() => {
               @click="close"
             >
               <span class="sr-only">Close modal</span>
-              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+              <svg
+                viewBox="0 0 24 24"
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
                 <path d="M18 6 6 18" />
                 <path d="m6 6 12 12" />
               </svg>

@@ -25,11 +25,7 @@ const handleSubmit = (event: Event) => {
 <template>
   <component
     :is="as"
-    :class="[
-      'space-y-4',
-      loading && 'pointer-events-none opacity-80',
-      animation.duration.normal,
-    ]"
+    :class="['space-y-4', loading && 'pointer-events-none opacity-80', animation.duration.normal]"
     @submit.prevent="handleSubmit"
     @keydown.enter="!submitOnEnter && $event.preventDefault()"
   >

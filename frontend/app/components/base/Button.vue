@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   to: undefined,
   override: undefined,
-  addStyle: ''
+  addStyle: '',
 })
 
 const emit = defineEmits<{
@@ -79,7 +79,12 @@ const handleClick = (e: Event) => {
   <NuxtLink
     v-if="to"
     :to="to"
-    :class="[buttonBaseClass, addStyle, variantClass, isDisabled && 'pointer-events-none opacity-60']"
+    :class="[
+      buttonBaseClass,
+      addStyle,
+      variantClass,
+      isDisabled && 'pointer-events-none opacity-60',
+    ]"
     @click="handleClick"
   >
     <svg
@@ -99,7 +104,12 @@ const handleClick = (e: Event) => {
     v-else
     :type="type"
     :disabled="isDisabled"
-    :class="[buttonBaseClass, addStyle, variantClass, isDisabled && 'pointer-events-none opacity-60']"
+    :class="[
+      buttonBaseClass,
+      addStyle,
+      variantClass,
+      isDisabled && 'pointer-events-none opacity-60',
+    ]"
     @click="handleClick"
   >
     <svg
