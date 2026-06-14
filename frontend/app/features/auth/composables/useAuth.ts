@@ -5,8 +5,8 @@ import { useToast } from '~/composables/useToast'
 
 type UseAuthReturn = {
   login: (payload: LoginPayload) => Promise<void>
-  logout: () => Promise<void>
-  fetchMe: () => Promise<void>
+  logout: (redirect?: boolean) => Promise<void>
+  fetchMe: () => Promise<boolean>
 }
 
 export const useAuth = (): UseAuthReturn => {
@@ -35,19 +35,24 @@ export const useAuth = (): UseAuthReturn => {
     }
   }
 
-  const logout = async (): Promise<void> => {
+  const logout = async (redirect = true): Promise<void> => {
     token.value = null
     store.clearAuth()
-    await navigateTo(AUTH_LOGIN_ROUTE)
+
+    if (redirect) {
+      await navigateTo(AUTH_LOGIN_ROUTE)
+    }
   }
 
-  const fetchMe = async (): Promise<void> => {
+  const fetchMe = async (): Promise<boolean> => {
     try {
       const res = await authService.getMe()
       store.user = res.me
+      return true
     } catch (error) {
       void error
-      await logout()
+      await logout(false)
+      return false
     }
   }
 

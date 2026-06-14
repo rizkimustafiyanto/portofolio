@@ -34,17 +34,18 @@ const onSubmit = async (): Promise<void> => {
       center
     />
 
-  <BaseForm as="form" class="text-left" :loading="loading" @submit="onSubmit">
-    <BaseFormField label="Email" required :error="errors.email">
-      <BaseInput v-model="form.email" type="email" />
-    </BaseFormField>
+    <BaseForm as="form" class="text-left" :loading="loading" @submit="onSubmit">
+      <BaseFormField label="Email" required :error="errors.email">
+        <BaseInput v-model="form.email" type="email" />
+      </BaseFormField>
 
-    <BaseFormField label="Password" required :error="errors.password">
-      <BaseInput v-model="form.password" type="password" />
-    </BaseFormField>
+      <BaseFormField label="Password" required :error="errors.password">
+        <BaseInput v-model="form.password" type="password" />
+      </BaseFormField>
 
-    <BaseButton type="submit" :loading="loading" variant="filled" add-style="rounded-xl w-full"> Login </BaseButton>
-  </BaseForm>
-  
+      <BaseButton type="submit" :loading="loading" variant="filled" add-style="rounded-xl w-full">
+        Login
+      </BaseButton>
+    </BaseForm>
   </div>
 </template>
