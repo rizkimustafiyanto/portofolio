@@ -8,6 +8,7 @@ interface Props {
   targetSelector?: string
   anchor?: string
   label?: string
+  showWhenScrollable?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -15,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   targetSelector: 'section[id]',
   anchor: '',
   label: 'Scroll',
+  showWhenScrollable: true,
 })
 
 const router = useRouter()
@@ -38,6 +40,12 @@ const updateVisibility = () => {
 
   if (props.mode === 'anchor') {
     isVisible.value = Boolean(props.anchor)
+    return
+  }
+
+  if (props.mode === 'next') {
+    const pageIsScrollable = document.documentElement.scrollHeight > window.innerHeight + 120
+    isVisible.value = targets.length > 0 || (props.showWhenScrollable && pageIsScrollable)
     return
   }
 
@@ -91,10 +99,12 @@ const scrollNext = () => {
     return
   }
 
-  window.scrollTo({
-    top: document.documentElement.scrollHeight,
-    behavior: 'smooth',
-  })
+  if (props.showWhenScrollable) {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    })
+  }
 }
 
 onMounted(() => {
@@ -113,7 +123,7 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => [props.mode, props.targetSelector, props.anchor, route.path],
+  () => [props.mode, props.targetSelector, props.anchor, props.showWhenScrollable, route.path],
   () => updateVisibility(),
 )
 </script>

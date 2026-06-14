@@ -8,8 +8,6 @@ useHead({
 })
 
 const { colorMode, initTheme } = useTheme()
-const route = useRoute()
-const isProjectDetailPage = computed(() => route.path.startsWith('/portfolio/projects/'))
 
 useHead(() => ({
   htmlAttrs: {
@@ -32,9 +30,6 @@ onMounted(() => {
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-
-  <CommonScrollIndicator v-if="!isProjectDetailPage" mode="next" />
-  <CommonScrollIndicator mode="top" label="Top" />
 
   <ClientOnly>
     <Toaster position="top-right" rich-colors close-button expand />
