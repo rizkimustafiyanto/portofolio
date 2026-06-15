@@ -48,10 +48,12 @@ export const useAuth = (): UseAuthReturn => {
     try {
       const res = await authService.getMe()
       store.user = res.me
+      store.setAuthChecked(true)
       return true
     } catch (error) {
       void error
       await logout(false)
+      store.setAuthChecked(true)
       return false
     }
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTheme } from './features/welcome/composables/useTheme'
+import { useTheme } from '~/composables/useTheme'
 
 useHead({
   htmlAttrs: {

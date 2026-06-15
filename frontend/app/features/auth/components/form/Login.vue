@@ -51,7 +51,7 @@ const onSubmit = async (): Promise<void> => {
       </BaseFormField>
 
       <BaseButton type="submit" :loading="loading" variant="filled" add-style="rounded-xl w-full">
-        Login
+        <span>Login</span>
       </BaseButton>
     </BaseForm>
   </div>

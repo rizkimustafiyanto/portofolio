@@ -1,2 +1,5 @@
 export * from './auth'
 export * from './routes'
+export * from './theme'
+export * from './animation'
+export * from './design'

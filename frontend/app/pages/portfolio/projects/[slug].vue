@@ -15,7 +15,7 @@ if (!project) {
 </script>
 
 <template>
-  <BaseSection override="mx-auto max-w-5xl px-6">
+  <main class="space-y-0">
     <PortfolioProjectsGallery v-if="project.gallery" :gallery="project.gallery" />
     <PortfolioProjectsCaseStudy v-if="project" :project="project" />
     <PortfolioProjectsProblem v-if="project.case.problem" :problem="project.case.problem" />
@@ -30,5 +30,5 @@ if (!project) {
     <PortfolioProjectsTech :tags="project.tags" />
 
     <PortfolioProjectsResult :results="project.case.results" />
-  </BaseSection>
+  </main>
 </template>

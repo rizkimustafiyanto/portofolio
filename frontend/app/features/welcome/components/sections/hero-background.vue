@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { animation } from '~/constans/animation'
-import { theme } from '~/constans/theme'
 import { useMouseParallax } from '../../composables/useMouseParallax'
+import { useTheme } from '~/composables/useTheme'
 
 const { x, y } = useMouseParallax()
+const { isDark } = useTheme()
 </script>
 
 <template>
@@ -11,8 +12,7 @@ const { x, y } = useMouseParallax()
     <div
       :class="[
         'absolute left-20 top-20 h-72 w-72 rounded-full blur-3xl transition-transform motion-reduce:transition-none will-change-transform mix-blend-multiply dark:mix-blend-normal',
-        'opacity-40 dark:opacity-100',
-        theme.colors.accentSurface,
+        isDark ? 'bg-amber-500/10 opacity-100' : 'bg-amber-100/60 opacity-40',
         animation.duration.slow,
       ]"
       :style="{
@@ -23,7 +23,7 @@ const { x, y } = useMouseParallax()
     <div
       :class="[
         'absolute bottom-20 right-20 h-96 w-96 rounded-full blur-3xl transition-transform motion-reduce:transition-none will-change-transform mix-blend-multiply dark:mix-blend-normal',
-        'bg-slate-200/10 opacity-30 dark:bg-sky-500/10 dark:opacity-100',
+        isDark ? 'bg-sky-500/10 opacity-100' : 'bg-slate-200/10 opacity-30',
         animation.duration.slower,
       ]"
       :style="{

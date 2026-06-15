@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useThemeClasses } from '~/features/welcome/composables/useThemeClasses'
+import { theme } from '~/constans'
 
-const { page } = useThemeClasses()
 const route = useRoute()
 const isProjectDetailPage = computed(() => route.path.startsWith('/portfolio/projects/'))
+
+const page = computed(() => [theme.colors.background])
 </script>
 
 <template>

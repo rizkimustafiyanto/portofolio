@@ -49,10 +49,7 @@ const resume = '/resume/cv.pdf'
       </div>
 
       <div class="mt-8 text-sm text-muted-foreground">
-        <BaseButton
-          :to="MANAGEMENT_ROUTE"
-          override="inline-flex items-center gap-2 transition hover:text-foreground"
-        >
+        <BaseButton :to="MANAGEMENT_ROUTE" variant="text" add-style="group">
           <span
             class="transition-transform duration-300 group-hover:translate-x-1"
             aria-hidden="true"

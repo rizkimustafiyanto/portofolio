@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useThemeClasses } from '~/features/welcome/composables/useThemeClasses'
+import { theme } from '~/constans'
 
-const { page } = useThemeClasses()
+const page = computed(() => [theme.colors.background])
 </script>
 
 <template>

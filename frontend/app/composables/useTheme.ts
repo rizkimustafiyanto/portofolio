@@ -1,32 +1,31 @@
 export const useTheme = () => {
   const colorMode = useState<'light' | 'dark'>('theme', () => 'light')
 
-  const applyTheme = (theme: 'light' | 'dark') => {
-    colorMode.value = theme
+  const isDark = computed(() => colorMode.value === 'dark')
+
+  const applyTheme = (mode: 'light' | 'dark') => {
+    colorMode.value = mode
 
     if (import.meta.client) {
-      localStorage.setItem('theme', theme)
+      localStorage.setItem('theme', mode)
 
-      const root = document.documentElement
-      root.classList.toggle('dark', theme === 'dark')
-      root.style.colorScheme = theme
+      document.documentElement.classList.toggle('dark', mode === 'dark')
+
+      document.documentElement.style.colorScheme = mode
     }
   }
 
   const toggleTheme = () => {
-    applyTheme(colorMode.value === 'dark' ? 'light' : 'dark')
+    applyTheme(isDark.value ? 'light' : 'dark')
   }
 
   const initTheme = () => {
-    if (!import.meta.client) {
-      return
-    }
+    if (!import.meta.client) return
 
     const saved = localStorage.getItem('theme')
 
-    if (saved === 'dark' || saved === 'light') {
+    if (saved === 'light' || saved === 'dark') {
       applyTheme(saved)
-
       return
     }
 
@@ -37,6 +36,7 @@ export const useTheme = () => {
 
   return {
     colorMode,
+    isDark,
     applyTheme,
     toggleTheme,
     initTheme,

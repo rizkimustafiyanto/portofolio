@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { animation } from '~/constans/animation'
-import { theme } from '~/constans/theme'
+import { theme } from '~/constans'
 </script>
 
 <template>
   <div
     :class="[
       'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm shadow-sm backdrop-blur-xl',
-      theme.colors.surface,
-      theme.colors.border,
-      theme.colors.text.secondary,
+      theme.badge.neutral,
       animation.duration.normal,
     ]"
   >

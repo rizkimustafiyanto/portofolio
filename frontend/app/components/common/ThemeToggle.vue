@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { animation } from '~/constans/animation'
-import { useTheme } from '~/features/welcome/composables/useTheme'
+import { useTheme } from '~/composables/useTheme'
 
 const { colorMode, toggleTheme } = useTheme()
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useAuthThemeClasses } from '~/features/auth/composables/useAuthThemeClasses'
+import { theme } from '~/constans'
 
-const { page } = useAuthThemeClasses()
+const page = computed(() => [theme.colors.background])
 </script>
 
 <template>

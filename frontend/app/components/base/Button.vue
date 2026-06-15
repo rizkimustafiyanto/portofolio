@@ -49,12 +49,12 @@ const buttonBaseClass = [
 const variantClass = computed(() => {
   const map: Record<Variant, Record<Tone, string>> = {
     filled: {
-      default: theme.colors.button.filled,
-      danger: theme.colors.button.dangerFilled,
+      default: theme.button.filled,
+      danger: theme.button.dangerFilled,
     },
     text: {
-      default: theme.colors.button.text,
-      danger: theme.colors.button.dangerText,
+      default: theme.button.text,
+      danger: theme.button.dangerText,
     },
   }
 
