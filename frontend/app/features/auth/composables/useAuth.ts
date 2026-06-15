@@ -2,11 +2,14 @@ import { AUTH_LOGIN_ROUTE, MANAGEMENT_ROUTE, TOKEN_COOKIE_KEY } from '~/constans
 import { useAuthService } from '../services/graphql'
 import type { LoginPayload } from '../types/login'
 import { useToast } from '~/composables/useToast'
+import { loginSchema } from '../schemas/login-schema'
 
 type UseAuthReturn = {
   login: (payload: LoginPayload) => Promise<void>
   logout: (redirect?: boolean) => Promise<void>
   fetchMe: () => Promise<boolean>
+  errors: Ref<Record<string, string>>
+  validate: (data: LoginPayload) => boolean
 }
 
 export const useAuth = (): UseAuthReturn => {
@@ -58,9 +61,13 @@ export const useAuth = (): UseAuthReturn => {
     }
   }
 
+  const { errors, validate } = useZodForm(loginSchema)
+
   return {
     login,
     logout,
     fetchMe,
+    errors,
+    validate,
   }
 }

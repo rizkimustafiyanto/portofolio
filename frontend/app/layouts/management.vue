@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useThemeClasses } from '~/features/welcome/composables/useThemeClasses'
+import { theme } from '~/constans'
 
-const { page } = useThemeClasses()
+const page = computed(() => [theme.colors.background])
 </script>
 
 <template>
   <div :class="['min-h-screen transition-colors duration-300', page]">
     <UiManagement />
 
-    <div class="lg:pl-72">
+    <div class="lg:pl-[240px]">
       <UiManagementHeader />
 
       <main class="p-6 md:p-8">
@@ -16,7 +16,7 @@ const { page } = useThemeClasses()
       </main>
     </div>
 
-    <CommonScrollIndicator mode="next" target-selector="main section, main [data-scroll-target]" />
+    <CommonScrollIndicator mode="next" target-selector="section" />
     <CommonScrollIndicator mode="top" label="Top" />
   </div>
 </template>

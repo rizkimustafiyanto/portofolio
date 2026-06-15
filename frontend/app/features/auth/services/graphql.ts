@@ -2,7 +2,7 @@ import { useGraphqlClient } from '~/services/graphql'
 import { LOGIN_MUTATION, ME_QUERY } from '../graphql'
 
 import type { LoginPayload } from '../types/login'
-import type { LoginMutationResponse, MeQueryResponse } from '../types/graphql'
+import type { LoginMutationResponse, MeQueryResponse } from '../types/graphql-types'
 
 export const useAuthService = () => {
   const client = useGraphqlClient()

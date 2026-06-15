@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { useSubmitGuard } from '~/composables/useSubmitGuard'
 import { useAuth } from '../../composables/useAuth'
-import { loginSchema } from '../../schemas/login-schema'
 import type { LoginForm } from '../../schemas/login-schema'
+import { theme } from '~/constans'
 
 const form = reactive<LoginForm>({
   email: '',
   password: '',
 })
 
-const { errors, validate } = useZodForm(loginSchema)
-
-const { login } = useAuth()
+const { login, validate, errors } = useAuth()
 
 const { loading, wrap } = useSubmitGuard()
 
@@ -32,7 +30,7 @@ const onSubmit = async (): Promise<void> => {
         Welcome back
       </p>
 
-      <h2 class="text-4xl font-normal leading-tight text-slate-800 dark:text-slate-50 md:text-6xl">
+      <h2 :class="['text-4xl font-normal leading-tight md:text-6xl', theme.colors.text.primary]">
         Login
       </h2>
 
