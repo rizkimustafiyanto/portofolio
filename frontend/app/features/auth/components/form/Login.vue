@@ -27,12 +27,19 @@ const onSubmit = async (): Promise<void> => {
 
 <template>
   <div class="w-[360px] space-y-6 text-center p-8 border rounded-md">
-    <BaseHeading
-      eyebrow="Welcome back"
-      title="Login"
-      description="Fill the form with right email n password"
-      center
-    />
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="mb-3 text-sm uppercase tracking-[0.3em] text-amber-700 dark:text-amber-300">
+        Welcome back
+      </p>
+
+      <h2 class="text-4xl font-normal leading-tight text-slate-800 dark:text-slate-50 md:text-6xl">
+        Login
+      </h2>
+
+      <p class="mt-6 text-sm leading-normal text-slate-600 dark:text-slate-300">
+        Fill the form with right email n password
+      </p>
+    </div>
 
     <BaseForm as="form" class="text-left" :loading="loading" @submit="onSubmit">
       <BaseFormField label="Email" required :error="errors.email">
