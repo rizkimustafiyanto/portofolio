@@ -7,18 +7,24 @@ interface Props {
   title: string
   description?: string
   center?: boolean
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   center: false,
-  size: 'sm',
+  size: 'xs',
   eyebrow: undefined,
   description: undefined,
 })
 
 const headingConfig = computed(() => {
   const variants = {
+     xs: {
+      title: 'text-xl md:text-2xl',
+      eyebrow: 'mb-1',
+      description: 'mt-2',
+    },
+
     sm: {
       title: 'text-2xl md:text-3xl',
       eyebrow: 'mb-2',
