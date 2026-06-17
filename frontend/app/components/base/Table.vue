@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
+import { animation } from '~/constans/animation'
 import { theme } from '~/constans/theme'
 
 export type TableColumn<TItem extends Record<string, unknown>> = {
@@ -12,20 +13,40 @@ export type TableColumn<TItem extends Record<string, unknown>> = {
 interface Props {
   items?: T[]
   columns?: TableColumn<T>[]
+
   rowKey?: keyof T | ((item: T, index: number) => string | number)
+
   striped?: boolean
+  hoverable?: boolean
+
+  loading?: boolean
+
+  variant?: 'default' | 'filled' | 'ghost'
+  size?: 'sm' | 'md' | 'lg'
+
   emptyText?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   items: () => [],
   columns: () => [],
+
   rowKey: undefined,
+
   striped: true,
+  hoverable: true,
+
+  loading: false,
+
+  variant: 'default',
+  size: 'md',
+
   emptyText: 'No data available.',
 })
 
-const getValue = (item: T, key: keyof T | string) => item[key as keyof T]
+const getValue = (item: T, key: keyof T | string) => {
+  return item[key as keyof T]
+}
 
 const getRowKey = (item: T, index: number) => {
   if (typeof props.rowKey === 'function') {
@@ -42,28 +63,85 @@ const getRowKey = (item: T, index: number) => {
 const headerAlignClass = (align?: TableColumn<T>['align']) => {
   if (align === 'center') return 'text-center'
   if (align === 'right') return 'text-right'
+
   return 'text-left'
 }
 
 const cellAlignClass = (align?: TableColumn<T>['align']) => {
   if (align === 'center') return 'justify-center'
   if (align === 'right') return 'justify-end'
+
   return 'justify-between'
 }
+
+const sizeClass = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return {
+        header: 'px-3 py-2 text-xs',
+        cell: 'px-3 py-2 text-sm',
+      }
+
+    case 'lg':
+      return {
+        header: 'px-6 py-5 text-base',
+        cell: 'px-6 py-5 text-base',
+      }
+
+    default:
+      return {
+        header: 'px-5 py-4 text-sm',
+        cell: 'px-5 py-4 text-sm',
+      }
+  }
+})
+
+const variantClass = computed(() => {
+  switch (props.variant) {
+    case 'filled':
+      return `
+        bg-muted
+        border-transparent
+      `
+
+    case 'ghost':
+      return `
+        bg-transparent
+        border-transparent
+      `
+
+    default:
+      return `
+        ${theme.colors.surface}
+        border-black/10
+      `
+  }
+})
 </script>
 
 <template>
-  <div :class="[theme.colors.table.shell, 'overflow-hidden']">
+  <div
+    :class="[
+      theme.table.shell,
+      variantClass,
+      animation.duration.normal,
+      'transition-all overflow-hidden',
+    ]"
+  >
     <div class="overflow-x-auto">
       <table class="base-table min-w-full border-separate border-spacing-0">
-        <thead v-if="$slots.header || columns.length" :class="theme.colors.table.header">
+        <thead v-if="$slots.header || columns.length" :class="theme.table.header">
           <slot name="header" :columns="columns">
             <tr>
               <th
                 v-for="column in columns"
                 :key="String(column.key)"
-                class="border-b px-5 py-4 text-sm font-medium"
-                :class="[headerAlignClass(column.align), column.headerClass]"
+                :class="[
+                  sizeClass.header,
+                  headerAlignClass(column.align),
+                  column.headerClass,
+                  'border-b font-medium',
+                ]"
               >
                 {{ column.label }}
               </th>
@@ -71,22 +149,48 @@ const cellAlignClass = (align?: TableColumn<T>['align']) => {
           </slot>
         </thead>
 
-        <tbody v-if="$slots.body || items.length">
+        <tbody v-if="loading">
+          <slot name="loading">
+            <tr>
+              <td
+                :colspan="Math.max(columns.length, 1)"
+                class="px-5 py-10 text-center text-sm text-muted-foreground"
+              >
+                Loading...
+              </td>
+            </tr>
+          </slot>
+        </tbody>
+
+        <tbody v-else-if="$slots.body || items.length">
           <slot name="body" :items="items" :columns="columns" :get-value="getValue">
             <tr
               v-for="(item, rowIndex) in items"
               :key="getRowKey(item, rowIndex)"
               :class="[
-                theme.colors.table.row,
+                theme.table.row,
+
+                hoverable && 'hover:bg-slate-50/70 dark:hover:bg-white/5',
+
                 striped && rowIndex % 2 === 1 && 'bg-slate-50/40 dark:bg-white/3',
+
+                animation.duration.fast,
+                'transition-colors',
               ]"
             >
               <td
                 v-for="column in columns"
                 :key="String(column.key)"
                 :data-label="column.label"
-                class="border-b px-5 py-4"
-                :class="[column.cellClass, cellAlignClass(column.align)]"
+                :class="[
+                  sizeClass.cell,
+
+                  column.cellClass,
+
+                  cellAlignClass(column.align),
+
+                  'border-b',
+                ]"
               >
                 <slot
                   :name="`cell-${String(column.key)}`"
@@ -100,13 +204,17 @@ const cellAlignClass = (align?: TableColumn<T>['align']) => {
               </td>
             </tr>
           </slot>
+        </tbody>
 
-          <tr v-if="!items.length">
+        <tbody v-else>
+          <tr>
             <td
               :colspan="Math.max(columns.length, 1)"
               class="px-5 py-10 text-center text-sm text-muted-foreground"
             >
-              {{ emptyText }}
+              <slot name="empty">
+                {{ emptyText }}
+              </slot>
             </td>
           </tr>
         </tbody>
@@ -141,7 +249,7 @@ const cellAlignClass = (align?: TableColumn<T>['align']) => {
   .base-table :deep(tr) {
     margin-bottom: 0.75rem;
     overflow: hidden;
-    border-radius: 1.5rem;
+    border-radius: 1rem;
     border: 1px solid rgb(226 232 240 / 0.8);
     background: rgb(255 255 255 / 0.86);
   }
@@ -156,6 +264,7 @@ const cellAlignClass = (align?: TableColumn<T>['align']) => {
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
+
     border-bottom: 1px solid rgb(226 232 240 / 0.8);
     padding: 0.9rem 1rem;
   }
@@ -166,10 +275,13 @@ const cellAlignClass = (align?: TableColumn<T>['align']) => {
 
   .base-table :deep(td::before) {
     content: attr(data-label);
+
     flex: 0 0 40%;
+
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.02em;
+
     color: rgb(100 116 139 / 1);
   }
 

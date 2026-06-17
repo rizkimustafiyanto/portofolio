@@ -7,6 +7,7 @@ import { badge } from './badge'
 import { alert } from './alert'
 import { modal } from './modal'
 import { input } from './input'
+import { select } from './select'
 
 export const theme = {
   colors,
@@ -18,4 +19,5 @@ export const theme = {
   alert,
   modal,
   input,
+  select,
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { animation } from '~/constans/animation'
 import { theme } from '~/constans/theme'
 
 type PaginationItem = number | 'ellipsis'
@@ -14,13 +15,36 @@ type PaginationMeta = {
 
 interface Props {
   meta: PaginationMeta
+
   siblingCount?: number
   hideIfSinglePage?: boolean
+
+  size?: 'sm' | 'md' | 'lg'
+
+  variant?: 'default' | 'filled' | 'ghost'
+
+  loading?: boolean
+
+  showInfo?: boolean
+
+  previousIcon?: string
+  nextIcon?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   siblingCount: 1,
   hideIfSinglePage: true,
+
+  size: 'md',
+
+  variant: 'default',
+
+  loading: false,
+
+  showInfo: false,
+
+  previousIcon: 'lucide:chevron-left',
+  nextIcon: 'lucide:chevron-right',
 })
 
 const emit = defineEmits<{
@@ -29,10 +53,16 @@ const emit = defineEmits<{
 }>()
 
 const currentPage = computed(() => Math.max(1, props.meta.page))
+
 const totalPages = computed(() => Math.max(1, props.meta.totalPage))
+
+const canRender = computed(() => {
+  return !(props.hideIfSinglePage && totalPages.value <= 1)
+})
 
 const pages = computed<PaginationItem[]>(() => {
   const page = Math.min(Math.max(1, currentPage.value), totalPages.value)
+
   const siblingCount = Math.max(0, props.siblingCount)
 
   if (totalPages.value <= 7) {
@@ -40,7 +70,9 @@ const pages = computed<PaginationItem[]>(() => {
   }
 
   const startPage = Math.max(2, page - siblingCount)
+
   const endPage = Math.min(totalPages.value - 1, page + siblingCount)
+
   const showLeftEllipsis = startPage > 2
   const showRightEllipsis = endPage < totalPages.value - 1
 
@@ -63,76 +95,161 @@ const pages = computed<PaginationItem[]>(() => {
   return items
 })
 
-const canRender = computed(() => !(props.hideIfSinglePage && totalPages.value <= 1))
-
 const goToPage = (nextPage: number) => {
   const page = Math.min(Math.max(1, nextPage), totalPages.value)
+
   if (page === currentPage.value) return
 
   emit('update:page', page)
   emit('pageChange', page)
 }
+
+const sizeClass = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return {
+        item: 'h-8 min-w-8 text-xs',
+        icon: 'h-3.5 w-3.5',
+      }
+
+    case 'lg':
+      return {
+        item: 'h-11 min-w-11 text-base',
+        icon: 'h-5 w-5',
+      }
+
+    default:
+      return {
+        item: 'h-9 min-w-9 text-sm',
+        icon: 'h-4 w-4',
+      }
+  }
+})
+
+const variantClass = computed(() => {
+  switch (props.variant) {
+    case 'filled':
+      return `
+        bg-muted
+        border-transparent
+      `
+
+    case 'ghost':
+      return `
+        bg-transparent
+        border-transparent
+      `
+
+    default:
+      return `
+        ${theme.colors.surface}
+        border-black/10
+      `
+  }
+})
+
+const startItem = computed(() => {
+  return (currentPage.value - 1) * props.meta.limit + 1
+})
+
+const endItem = computed(() => {
+  return Math.min(currentPage.value * props.meta.limit, props.meta.totalData)
+})
 </script>
 
 <template>
-  <nav
-    v-if="canRender"
-    :class="[theme.colors.pagination.shell, 'inline-flex items-center gap-1']"
-    aria-label="Pagination"
-  >
-    <button
-      type="button"
-      :class="[
-        theme.colors.pagination.control,
-        !props.meta.hasPrevious && 'pointer-events-none opacity-50',
-      ]"
-      :disabled="!props.meta.hasPrevious"
-      aria-label="Previous page"
-      @click="goToPage(currentPage - 1)"
+  <div v-if="canRender" class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div v-if="showInfo" class="text-sm text-muted-foreground">
+      Showing
+      {{ startItem }}
+      -
+      {{ endItem }}
+      of
+      {{ meta.totalData }}
+    </div>
+
+    <nav
+      :class="[theme.pagination.shell, 'inline-flex items-center gap-1']"
+      aria-label="Pagination"
     >
-      <slot name="previous">
-        <span aria-hidden="true">
-          {{ `<` }}
-        </span>
-      </slot>
-    </button>
-
-    <template v-for="item in pages" :key="`${item}-${typeof item}`">
-      <span v-if="item === 'ellipsis'" :class="['px-2 text-sm', theme.colors.pagination.ellipsis]">
-        <slot name="ellipsis">...</slot>
-      </span>
-
       <button
-        v-else
         type="button"
+        :disabled="!meta.hasPrevious || loading"
         :class="[
-          theme.colors.pagination.item,
-          item === currentPage ? theme.colors.pagination.active : theme.colors.pagination.inactive,
-          !props.meta.hasNext && item > currentPage && 'pointer-events-none opacity-50',
+          theme.pagination.control,
+          sizeClass.item,
+
+          variantClass,
+
+          animation.duration.fast,
+          'transition-all',
+
+          (!meta.hasPrevious || loading) && 'pointer-events-none opacity-50',
         ]"
-        :aria-current="item === currentPage ? 'page' : undefined"
-        :disabled="false"
-        @click="goToPage(item)"
+        aria-label="Previous page"
+        @click="goToPage(currentPage - 1)"
       >
-        <slot name="item" :page="item" :active="item === currentPage">
-          {{ item }}
+        <slot name="previous">
+          <Icon :name="previousIcon" :class="sizeClass.icon" />
         </slot>
       </button>
-    </template>
 
-    <button
-      type="button"
-      :class="[
-        theme.colors.pagination.control,
-        !props.meta.hasNext && 'pointer-events-none opacity-50',
-      ]"
-      :disabled="!props.meta.hasNext"
-      aria-label="Next page"
-      @click="goToPage(currentPage + 1)"
-    >
-      <slot name="next">
-        <span aria-hidden="true">></span>
-      </slot>
-    </button>
-  </nav>
+      <template v-for="item in pages" :key="`${item}-${typeof item}`">
+        <span v-if="item === 'ellipsis'" :class="['px-2 text-sm', theme.pagination.ellipsis]">
+          ...
+        </span>
+
+        <button
+          v-else
+          type="button"
+          :title="`Page ${item}`"
+          :aria-label="`Go to page ${item}`"
+          :aria-current="item === currentPage ? 'page' : undefined"
+          :disabled="loading"
+          :class="[
+            theme.pagination.item,
+
+            sizeClass.item,
+
+            animation.duration.fast,
+            'transition-all',
+
+            item === currentPage ? theme.pagination.active : theme.pagination.inactive,
+
+            variantClass,
+
+            loading && 'pointer-events-none opacity-50',
+          ]"
+          @click="goToPage(item)"
+        >
+          <slot name="item" :page="item" :active="item === currentPage">
+            {{ item }}
+          </slot>
+        </button>
+      </template>
+
+      <button
+        type="button"
+        :disabled="!meta.hasNext || loading"
+        :class="[
+          theme.pagination.control,
+
+          sizeClass.item,
+
+          variantClass,
+
+          animation.duration.fast,
+          'transition-all',
+
+          (!meta.hasNext || loading) && 'pointer-events-none opacity-50',
+        ]"
+        aria-label="Next page"
+        @click="goToPage(currentPage + 1)"
+      >
+        <slot name="next">
+          <Icon :name="nextIcon" :class="sizeClass.icon" />
+        </slot>
+      </button>
+    </nav>
+  </div>
 </template>
