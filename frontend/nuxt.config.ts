@@ -3,7 +3,7 @@ import { resolveRuntimeConfig, resolveServerConfig } from './config/runtime'
 export default defineNuxtConfig({
   compatibilityDate: '2024-12-19',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/eslint'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/eslint', '@nuxt/icon'],
   css: ['~/assets/css/main.css', 'vue-sonner/style.css'],
   typescript: {
     strict: true,

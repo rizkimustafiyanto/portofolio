@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const headingConfig = computed(() => {
   const variants = {
-     xs: {
+    xs: {
       title: 'text-xl md:text-2xl',
       eyebrow: 'mb-1',
       description: 'mt-2',

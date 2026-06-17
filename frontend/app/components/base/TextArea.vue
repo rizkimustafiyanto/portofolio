@@ -11,29 +11,76 @@ interface Props {
   disabled?: boolean
   readonly?: boolean
 
-  label?: string
   error?: string
-  helperText?: string
-  required?: boolean
+
+  size?: 'sm' | 'md' | 'lg'
+  variant?: 'default' | 'filled' | 'ghost'
 }
 
-withDefaults(defineProps<Props>(), {
-  rows: 4,
+const props = withDefaults(defineProps<Props>(), {
+  rows: 2,
   placeholder: '',
+
   disabled: false,
   readonly: false,
-  label: '',
+
   error: '',
-  helperText: '',
+  withErrorMessage: false,
+
+  size: 'md',
+  variant: 'default',
 })
 
-defineEmits<{
+const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
+
+function updateValue(event: Event) {
+  emit('update:modelValue', (event.target as HTMLTextAreaElement).value)
+}
+
+const sizeClass = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'min-h-[80px] text-sm'
+
+    case 'lg':
+      return 'min-h-[120px] text-base'
+
+    default:
+      return 'min-h-[100px] text-sm'
+  }
+})
+
+const variantClass = computed(() => {
+  switch (props.variant) {
+    case 'filled':
+      return `
+        bg-muted
+        border-transparent
+        focus:border-primary
+      `
+
+    case 'ghost':
+      return `
+        bg-transparent
+        border-transparent
+        focus:border-border
+      `
+
+    default:
+      return `
+        ${theme.colors.surface}
+        border-black/10
+        focus:border-slate-400
+        dark:focus:border-slate-500
+      `
+  }
+})
 </script>
 
 <template>
-  <BaseFormField :label="label" :error="error" :required="required" :helper-text="helperText">
+  <div class="relative">
     <textarea
       :value="modelValue"
       :rows="rows"
@@ -41,13 +88,19 @@ defineEmits<{
       :disabled="disabled"
       :readonly="readonly"
       :class="[
-        'w-full rounded-lg border px-3 py-2 outline-none transition',
+        'w-full block rounded-lg border px-3 py-2 outline-none resize-none',
+
         animation.duration.normal,
-        error
-          ? 'border-red-500'
-          : `${theme.colors.surface} border-black/10 focus:border-slate-400 dark:focus:border-slate-500`,
+        'transition-all',
+
+        sizeClass,
+        variantClass,
+
+        error && 'border-red-500',
+
+        disabled && 'cursor-not-allowed opacity-50',
       ]"
-      @input="$emit('update:modelValue', ($event.target as HTMLTextAreaElement).value)"
+      @input="updateValue"
     />
-  </BaseFormField>
+  </div>
 </template>

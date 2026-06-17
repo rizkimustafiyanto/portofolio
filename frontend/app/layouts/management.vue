@@ -8,7 +8,7 @@ const page = computed(() => [theme.colors.background])
   <div :class="['min-h-screen transition-colors duration-300', page]">
     <UiManagement />
 
-    <div class="lg:pl-[240px]">
+    <div class="lg:pl-[210px]">
       <UiManagementHeader />
 
       <main class="p-6 md:p-8">
