@@ -61,6 +61,16 @@ func (r *ProjectRepository) GetProjects(
 ) ([]projectModel.Project, int64, error) {
 	var projects []projectModel.Project
 
+	// Ensure limit and offset are valid
+	limit := filter.Limit
+	if limit <= 0 {
+		limit = 10 // default limit
+	}
+	offset := filter.Offset()
+	if offset < 0 {
+		offset = 0
+	}
+
 	baseQuery := r.DB.WithContext(ctx).Model(&projectModel.Project{})
 	baseQuery = applyProjectFilters(baseQuery, filter)
 
@@ -76,8 +86,8 @@ func (r *ProjectRepository) GetProjects(
 
 	err := query.
 		Order("created_at DESC").
-		Limit(filter.Limit).
-		Offset(filter.Offset()).
+		Limit(limit).
+		Offset(offset).
 		Find(&projects).Error
 	if err != nil {
 		return nil, 0, err

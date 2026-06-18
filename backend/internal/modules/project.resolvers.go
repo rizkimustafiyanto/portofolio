@@ -161,6 +161,13 @@ func (r *queryResolver) Projects(ctx context.Context, filter *dto.ProjectFilterI
 	if filter != nil {
 		projectFilter = *filter
 	}
+	
+	if projectFilter.Page <= 0 {
+		projectFilter.Page = 1
+	}
+	if projectFilter.Limit <= 0 {
+		projectFilter.Limit = 10
+	}
 
 	projects, err := r.Resolver.ProjectService.GetAllProjects(ctx, projectFilter)
 	status := "SUCCESS"
@@ -218,12 +225,18 @@ func (r *queryResolver) Project(ctx context.Context, id string) (*dto.Project, e
 
 // Page is the resolver for the page field.
 func (r *projectFilterInputResolver) Page(ctx context.Context, obj *dto.ProjectFilterInput, data *int32) error {
-	panic(fmt.Errorf("not implemented: Page - page"))
+	if data != nil {
+		obj.Page = int(*data)
+	}
+	return nil
 }
 
 // Limit is the resolver for the limit field.
 func (r *projectFilterInputResolver) Limit(ctx context.Context, obj *dto.ProjectFilterInput, data *int32) error {
-	panic(fmt.Errorf("not implemented: Limit - limit"))
+	if data != nil {
+		obj.Limit = int(*data)
+	}
+	return nil
 }
 
 // Project returns generated.ProjectResolver implementation.
