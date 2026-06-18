@@ -1,50 +1,110 @@
 <script setup lang="ts">
-defineProps<{
-  projects: {
-    id: string
-    title: string
-    status: string
-    updatedAt: string
-  }[]
-}>()
+import type { TableColumn } from '~/components/base/Table.vue'
+import { useProjectGet } from '~/features/project/composables/useProjectGet'
+import { useProjectStore } from '~/features/project/stores/project-store'
+import type { Project, ProjectFilter } from '~/features/project/types/project'
+
+const columns: TableColumn<Project>[] = [
+  {
+    key: 'projectName',
+    label: 'Project',
+  },
+  {
+    key: 'description',
+    label: 'Description',
+  },
+  {
+    key: 'demoUrl',
+    label: 'Demo URL',
+  },
+  {
+    key: 'createdAt',
+    label: 'Created At',
+  },
+]
+
+const { getProjects } = useProjectGet()
+const store = useProjectStore()
+
+const projects = computed(() => store.projects)
+const meta = computed(() => store.meta)
+
+const filter = reactive<ProjectFilter>({
+  page: 1,
+  limit: 10,
+  projectName: '',
+})
+
+const fetchData = async () => {
+  await getProjects({
+    ...filter,
+  })
+  console.log(meta.value)
+}
+
+const handleSearch = async () => {
+  filter.page = 1
+
+  await fetchData()
+}
+
+const handlePageChange = async (page: number) => {
+  filter.page = page
+
+  await fetchData()
+}
+
+const handleLimitChange = async (limit: number) => {
+  filter.limit = limit
+  filter.page = 1
+
+  await fetchData()
+}
+
+onMounted(async () => {
+  await fetchData()
+})
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-3xl border border-border">
-    <table class="w-full">
-      <thead>
-        <tr class="border-b border-border text-left">
-          <th class="p-4">ID</th>
-          <th class="p-4">Project</th>
-          <th class="p-4">Status</th>
-          <th class="p-4">Updated</th>
-          <th class="p-4">Action</th>
-        </tr>
-      </thead>
+  <div class="space-y-6">
+    <div class="flex flex-col gap-4 md:flex-row items-center">
+      <BaseInput
+        v-model="filter.projectName"
+        size="sm"
+        placeholder="Cari project..."
+        class="flex-1"
+        @keyup.enter="handleSearch"
+      />
 
-      <tbody>
-        <tr v-for="project in projects" :key="project.id" class="border-b border-border">
-          <td class="p-4">
-            {{ project.id }}
-          </td>
+      <BaseButton size="sm" @click="handleSearch">
+        <Icon name="lucide:search" class="h-4 w-4" />
+      </BaseButton>
+    </div>
 
-          <td class="p-4">
-            {{ project.title }}
-          </td>
+    <BaseTable
+      :items="projects"
+      :columns="columns"
+      row-key="id"
+      :loading="false"
+      empty-text="Project tidak ditemukan."
+    >
+      <template #cell-demoUrl="{ value }">
+        <a :href="String(value)" target="_blank" class="text-primary hover:underline"> Demo </a>
+      </template>
 
-          <td class="p-4">
-            {{ project.status }}
-          </td>
+      <template #cell-createdAt="{ value }">
+        {{ new Date(String(value)).toLocaleDateString('id-ID') }}
+      </template>
+    </BaseTable>
 
-          <td class="p-4">
-            {{ project.updatedAt }}
-          </td>
-
-          <td class="p-4">
-            <NuxtLink :to="`/management/projects/${project.id}`"> Edit </NuxtLink>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <BasePagination
+      :meta="meta"
+      :hide-if-single-page="false"
+      :show-info="true"
+      class="w-full"
+      @change-page="handlePageChange"
+      @change-limit="handleLimitChange"
+    />
   </div>
 </template>

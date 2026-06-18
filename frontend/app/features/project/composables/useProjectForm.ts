@@ -5,7 +5,6 @@ import { useProjectStore } from '../stores/project-store'
 import { useProjectService } from '../services/project-service'
 import type { ActionProject } from '../types/project'
 import { toast } from 'vue-sonner'
-import { MANAGEMENT_ROUTE } from '~/constans'
 
 type UseProjectFormReturn = {
   form: CreateProjectData
@@ -41,7 +40,6 @@ export function useProjectForm(): UseProjectFormReturn {
       store.projectDetail = res.create_project
       store.getAll({ project: res.create_project })
 
-      console.log(res.create_project)
       toast.success('Project Created')
     } catch (err) {
       toast.error(extractGraphqlError(err))

@@ -5,8 +5,21 @@ export const PROJECTS_QUERY = `
     projects(
       filter: $filter
     ) {
-      items
-      meta  
+      items{
+        id
+        projectName
+        description
+        demoUrl
+        createdAt
+      }
+      meta{
+        page
+        limit
+        totalData
+        totalPage
+        hasNext
+        hasPrevious
+      }  
     }
   }
 `

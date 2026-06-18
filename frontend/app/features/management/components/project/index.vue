@@ -7,9 +7,7 @@
         <BaseButton to="/management/projects/create" variant="filled"> + New Project </BaseButton>
       </div>
 
-      <!-- <ManagementProjectTable
-        :projects="projects"
-      /> -->
+      <ManagementProjectTable />
     </div>
   </BaseSection>
 </template>

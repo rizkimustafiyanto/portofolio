@@ -1,4 +1,4 @@
-import type { PaginationMeta } from '~/types/pagination'
+import type { ProjectPagination } from '~/types/pagination'
 import type { Project } from './project'
 
 export interface ActionResponse {
@@ -6,7 +6,7 @@ export interface ActionResponse {
 }
 
 export interface ProjectsResponse {
-  projects: PaginationMeta
+  projects: ProjectPagination
 }
 
 export interface ProjectResponse {
