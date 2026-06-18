@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   siblingCount: 1,
   hideIfSinglePage: true,
 
-  size: 'md',
+  size: 'sm',
 
   variant: 'default',
 
@@ -108,43 +108,42 @@ const sizeClass = computed(() => {
   switch (props.size) {
     case 'sm':
       return {
-        item: 'h-8 min-w-8 text-xs',
+        item: 'h-8 min-w-8 px-2 text-xs',
         icon: 'h-3.5 w-3.5',
       }
 
     case 'lg':
       return {
-        item: 'h-11 min-w-11 text-base',
+        item: 'h-11 min-w-11 px-4 text-base',
         icon: 'h-5 w-5',
       }
 
     default:
       return {
-        item: 'h-9 min-w-9 text-sm',
+        item: 'h-10 min-w-10 px-3 text-sm',
         icon: 'h-4 w-4',
       }
   }
 })
 
-const variantClass = computed(() => {
+const pageVariantClass = computed(() => {
   switch (props.variant) {
     case 'filled':
       return `
-        bg-muted
-        border-transparent
+        bg-amber-50
+        hover:bg-amber-100
+
+        dark:bg-amber-500/5
+        dark:hover:bg-amber-500/10
       `
 
     case 'ghost':
       return `
-        bg-transparent
-        border-transparent
+        hover:bg-transparent
       `
 
     default:
-      return `
-        ${theme.colors.surface}
-        border-black/10
-      `
+      return ''
   }
 })
 
@@ -159,7 +158,7 @@ const endItem = computed(() => {
 
 <template>
   <div v-if="canRender" class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-    <div v-if="showInfo" class="text-sm text-muted-foreground">
+    <div v-if="showInfo" :class="['text-sm', theme.colors.text.muted]">
       Showing
       {{ startItem }}
       -
@@ -168,23 +167,22 @@ const endItem = computed(() => {
       {{ meta.totalData }}
     </div>
 
-    <nav
-      :class="[theme.pagination.shell, 'inline-flex items-center gap-1']"
-      aria-label="Pagination"
-    >
+    <nav :class="[theme.pagination.shell, 'inline-flex items-center gap-1.5']">
       <button
         type="button"
         :disabled="!meta.hasPrevious || loading"
+        :aria-disabled="!meta.hasPrevious || loading"
         :class="[
           theme.pagination.control,
+
           sizeClass.item,
 
-          variantClass,
+          pageVariantClass,
 
           animation.duration.fast,
           'transition-all',
 
-          (!meta.hasPrevious || loading) && 'pointer-events-none opacity-50',
+          (!meta.hasPrevious || loading) && 'pointer-events-none opacity-40 saturate-0',
         ]"
         aria-label="Previous page"
         @click="goToPage(currentPage - 1)"
@@ -195,7 +193,10 @@ const endItem = computed(() => {
       </button>
 
       <template v-for="item in pages" :key="`${item}-${typeof item}`">
-        <span v-if="item === 'ellipsis'" :class="['px-2 text-sm', theme.pagination.ellipsis]">
+        <span
+          v-if="item === 'ellipsis'"
+          :class="['inline-flex items-center justify-center px-2', theme.pagination.ellipsis]"
+        >
           ...
         </span>
 
@@ -214,11 +215,11 @@ const endItem = computed(() => {
             animation.duration.fast,
             'transition-all',
 
-            item === currentPage ? theme.pagination.active : theme.pagination.inactive,
+            item === currentPage
+              ? theme.pagination.active
+              : [theme.pagination.inactive, pageVariantClass],
 
-            variantClass,
-
-            loading && 'pointer-events-none opacity-50',
+            loading && 'pointer-events-none opacity-50 animate-pulse',
           ]"
           @click="goToPage(item)"
         >
@@ -231,17 +232,18 @@ const endItem = computed(() => {
       <button
         type="button"
         :disabled="!meta.hasNext || loading"
+        :aria-disabled="!meta.hasNext || loading"
         :class="[
           theme.pagination.control,
 
           sizeClass.item,
 
-          variantClass,
+          pageVariantClass,
 
           animation.duration.fast,
           'transition-all',
 
-          (!meta.hasNext || loading) && 'pointer-events-none opacity-50',
+          (!meta.hasNext || loading) && 'pointer-events-none opacity-40 saturate-0',
         ]"
         aria-label="Next page"
         @click="goToPage(currentPage + 1)"
