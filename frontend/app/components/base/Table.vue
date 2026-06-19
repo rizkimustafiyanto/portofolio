@@ -141,6 +141,7 @@ const variantClass = computed(() => {
                   headerAlignClass(column.align),
                   column.headerClass,
                   'border-b font-medium',
+                  theme.table.border,
                 ]"
               >
                 {{ column.label }}
@@ -190,6 +191,8 @@ const variantClass = computed(() => {
                   cellAlignClass(column.align),
 
                   'border-b',
+                  
+                  theme.table.border,
                 ]"
               >
                 <slot

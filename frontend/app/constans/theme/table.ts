@@ -8,4 +8,6 @@ export const table = {
   cell: `border-slate-200/80 dark:border-slate-800`,
 
   accent: `text-amber-700 dark:text-amber-300`,
+
+  border: `border-black/5 dark:border-white/10`,
 }
