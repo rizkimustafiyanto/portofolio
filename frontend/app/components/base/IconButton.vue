@@ -20,12 +20,13 @@ const baseClass = [
   animation.duration.normal,
   animation.easing.smooth,
   theme.colors.surface,
+  'hover:bg-slate-50 hover:shadow-[0_12px_16px_-32px_rgba(15,23,42,0.25)] dark:hover:bg-slate-50/20',
   'border-black/10 dark:border-white/10',
 ]
 </script>
 
 <template>
-  <button :class="[sizeClass[size], baseClass, 'hover:-translate-y-1', 'hover:shadow-lg']">
+  <button :class="[sizeClass[size], baseClass]">
     <slot />
   </button>
 </template>

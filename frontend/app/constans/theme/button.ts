@@ -5,7 +5,6 @@ export const button = {
     border
     border-black/5
 
-    bg-white
     text-slate-800
 
 
@@ -15,9 +14,8 @@ export const button = {
     hover:shadow-[0_12px_16px_-32px_rgba(15,23,42,0.25)]
 
     dark:border-white/10
-    dark:bg-white
-    dark:text-slate-950
-    dark:hover:bg-slate-100
+    dark:text-slate-200
+    dark:hover:bg-slate-50/20
   `,
 
   text: `
