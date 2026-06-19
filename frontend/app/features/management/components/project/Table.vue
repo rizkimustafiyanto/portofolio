@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TableColumn } from '~/components/base/Table.vue'
+import { theme } from '~/constans'
 import { useProjectGet } from '~/features/project/composables/useProjectGet'
 import { useProjectStore } from '~/features/project/stores/project-store'
 import type { Project, ProjectFilter } from '~/features/project/types/project'
@@ -21,6 +22,10 @@ const columns: TableColumn<Project>[] = [
     key: 'createdAt',
     label: 'Created At',
   },
+  {
+    key: 'action',
+    label: 'Action'
+  }
 ]
 
 const { getProjects } = useProjectGet()
@@ -39,7 +44,6 @@ const fetchData = async () => {
   await getProjects({
     ...filter,
   })
-  console.log(meta.value)
 }
 
 const handleSearch = async () => {

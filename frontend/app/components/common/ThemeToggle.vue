@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { animation } from '~/constans/animation'
 import { useTheme } from '~/composables/useTheme'
+import { theme } from '~/constans';
 
 const { colorMode, toggleTheme } = useTheme()
 
@@ -11,6 +12,7 @@ const isDark = computed(() => colorMode.value === 'dark')
   <button
     :class="[
       'inline-flex h-10 items-center gap-2 rounded-full border border-border/70 px-3 text-sm transition hover:bg-background/80 hover:-translate-y-0.5 hover:shadow-lg md:px-4',
+      theme.colors.border,
       isDark
         ? 'bg-slate-900/85 text-white dark:bg-slate-900/85'
         : 'bg-white/85 text-slate-900 dark:bg-white/5',

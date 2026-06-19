@@ -16,7 +16,7 @@ withDefaults(defineProps<Props>(), {
       'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium',
 
       variant === 'default'
-        ? `${theme.colors.surface} ${theme.colors.text.secondary}`
+        ? `${theme.colors.surface} ${theme.colors.text.secondary} ${theme.colors.border}`
         : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
     ]"
   >

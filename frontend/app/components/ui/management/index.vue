@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { theme } from '~/constans';
+
 const route = useRoute()
 
 const menus = [
@@ -31,7 +33,7 @@ const menus = [
 
 <template>
   <aside
-    class="fixed inset-y-0 left-0 hidden w-[210px] border-r border-border bg-background lg:flex lg:flex-col"
+    :class="['fixed inset-y-0 left-0 hidden w-[210px] border-r border-border bg-background lg:flex lg:flex-col', theme.colors.border]"
   >
     <div class="px-8 py-8">
       <div class="text-xl font-semibold tracking-wide">Portfolio CMS</div>
@@ -51,7 +53,7 @@ const menus = [
       </NuxtLink>
     </nav>
 
-    <div class="border-t border-border p-4">
+    <div :class="['border-t border-border p-4', theme.colors.border]">
       <NuxtLink to="/portfolio" class="flex items-center rounded-2xl px-4 py-3 hover:bg-muted/50">
         View Portfolio
       </NuxtLink>
