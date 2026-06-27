@@ -8,6 +8,7 @@ import { alert } from './alert'
 import { modal } from './modal'
 import { input } from './input'
 import { select } from './select'
+import { tabs } from './tabs'
 
 export const theme = {
   colors,
@@ -20,4 +21,5 @@ export const theme = {
   modal,
   input,
   select,
+  tabs,
 }

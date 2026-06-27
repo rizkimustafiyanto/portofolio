@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { theme } from '~/constans';
+import { theme } from '~/constans'
 
 const route = useRoute()
 
@@ -33,7 +33,10 @@ const menus = [
 
 <template>
   <aside
-    :class="['fixed inset-y-0 left-0 hidden w-[210px] border-r border-border bg-background lg:flex lg:flex-col', theme.colors.border]"
+    :class="[
+      'fixed inset-y-0 left-0 hidden w-[210px] border-r border-border bg-background lg:flex lg:flex-col',
+      theme.colors.border,
+    ]"
   >
     <div class="px-8 py-8">
       <div class="text-xl font-semibold tracking-wide">Portfolio CMS</div>

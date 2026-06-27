@@ -191,7 +191,7 @@ const variantClass = computed(() => {
                   cellAlignClass(column.align),
 
                   'border-b',
-                  
+
                   theme.table.border,
                 ]"
               >

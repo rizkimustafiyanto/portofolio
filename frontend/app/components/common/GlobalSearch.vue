@@ -42,7 +42,10 @@ onUnmounted(() => {
 <template>
   <div>
     <button
-      :class="['flex h-10 w-72 items-center gap-2 rounded-xl border border-border px-3 text-sm text-muted-foreground transition-colors hover:bg-muted', theme.colors.border]"
+      :class="[
+        'flex h-10 w-72 items-center gap-2 rounded-xl border border-border px-3 text-sm text-muted-foreground transition-colors hover:bg-muted',
+        theme.colors.border,
+      ]"
       @click="open = true"
     >
       <Icon name="lucide:search" class="h-4 w-4" />
