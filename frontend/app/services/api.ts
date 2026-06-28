@@ -1,4 +1,4 @@
-import { AUTH_LOGIN_ROUTE, TOKEN_COOKIE_KEY } from '~/constans'
+import { routes, TOKEN_COOKIE_KEY } from '~/constans'
 import type { ApiErrorResponse } from '~/types/api'
 
 type FetchClient = ReturnType<typeof $fetch.create>
@@ -27,7 +27,7 @@ export const useApi = (): FetchClient => {
         token.value = null
         useAuthStore().clearAuth()
 
-        navigateTo(AUTH_LOGIN_ROUTE)
+        navigateTo(routes.AUTH_LOGIN_ROUTE)
       }
 
       if (response.status === 403) {

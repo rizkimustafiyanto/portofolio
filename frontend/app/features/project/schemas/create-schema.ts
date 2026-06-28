@@ -12,4 +12,4 @@ export const createProjectSchema = z.object({
   demoUrl: z.string().url('Invalid URL').nonempty('Project link is required'),
 })
 
-export type CreateProjectData = z.infer<typeof createProjectSchema>
+export type FormProjectData = z.infer<typeof createProjectSchema>

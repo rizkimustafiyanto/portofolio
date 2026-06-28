@@ -1,4 +1,4 @@
-import { AUTH_LOGIN_ROUTE, MANAGEMENT_ROUTE, TOKEN_COOKIE_KEY } from '~/constans'
+import { routes, TOKEN_COOKIE_KEY } from '~/constans'
 import { useAuthService } from '../services/graphql'
 import type { LoginPayload } from '../types/login'
 import { useToast } from '~/composables/useToast'
@@ -31,7 +31,7 @@ export const useAuth = (): UseAuthReturn => {
 
       toast.success('Login berhasil')
 
-      await navigateTo(MANAGEMENT_ROUTE)
+      await navigateTo(routes.MANAGEMENT_ROUTE)
     } catch (err) {
       toast.error(extractGraphqlError(err))
       return
@@ -43,7 +43,7 @@ export const useAuth = (): UseAuthReturn => {
     store.clearAuth()
 
     if (redirect) {
-      await navigateTo(AUTH_LOGIN_ROUTE)
+      await navigateTo(routes.AUTH_LOGIN_ROUTE)
     }
   }
 

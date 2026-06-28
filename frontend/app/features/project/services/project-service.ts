@@ -1,7 +1,12 @@
 import { useGraphqlClient } from '~/services/graphql'
 import type { ActionProject, ProjectFilter } from '../types/project'
-import type { ActionResponse, ProjectResponse, ProjectsResponse } from '../types/graphql-types'
-import { CREATE_MUTATION, PROJECT_ID_QUERY, PROJECTS_QUERY } from '../graphql'
+import type {
+  CreateResponse,
+  ProjectResponse,
+  ProjectsResponse,
+  UpdateResponse,
+} from '../types/graphql-types'
+import { CREATE_MUTATION, DELETE_MUTATION, PROJECT_ID_QUERY, PROJECTS_QUERY } from '../graphql'
 import { UPDATE_MUTATION } from '../graphql/mutation/update'
 
 export const useProjectService = () => {
@@ -9,15 +14,21 @@ export const useProjectService = () => {
 
   return {
     create(payload: ActionProject) {
-      return client.request<ActionResponse>(CREATE_MUTATION, {
+      return client.request<CreateResponse>(CREATE_MUTATION, {
         input: payload,
       })
     },
 
-    udpate(id: string, payload: ActionProject) {
-      return client.request<ActionResponse>(UPDATE_MUTATION, {
+    update(id: string, payload: ActionProject) {
+      return client.request<UpdateResponse>(UPDATE_MUTATION, {
         id: id,
         input: payload,
+      })
+    },
+
+    delete(id: string) {
+      return client.request<boolean>(DELETE_MUTATION, {
+        id: id,
       })
     },
 

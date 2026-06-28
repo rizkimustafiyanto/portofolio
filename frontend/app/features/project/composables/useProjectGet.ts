@@ -30,9 +30,7 @@ export function useProjectGet(): UseProjectGetReturn {
     try {
       const res = await projectService.getDetail(id)
 
-      store.setProjectDetail({
-        project: res.project,
-      })
+      store.setProjectDetail(res.project)
     } catch (err) {
       toast.error(extractGraphqlError(err))
       return

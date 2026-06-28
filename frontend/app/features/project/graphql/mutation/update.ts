@@ -3,7 +3,7 @@ export const UPDATE_MUTATION = `
     $id: ID!
     $input: UpdateProjectInput!
   ) {
-    udpateProject(
+    updateProject(
       id: $id
       input: $input
     ) {

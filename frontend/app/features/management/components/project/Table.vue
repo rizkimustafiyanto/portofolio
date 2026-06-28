@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import type { TableColumn } from '~/components/base/Table.vue'
-import { theme } from '~/constans'
 import { useProjectGet } from '~/features/project/composables/useProjectGet'
 import { useProjectStore } from '~/features/project/stores/project-store'
 import type { Project, ProjectFilter } from '~/features/project/types/project'
 
 const columns: TableColumn<Project>[] = [
+  {
+    key: 'no',
+    label: 'No',
+    align: 'center',
+    cellClass: 'text-center',
+  },
   {
     key: 'projectName',
     label: 'Project',
@@ -24,8 +29,8 @@ const columns: TableColumn<Project>[] = [
   },
   {
     key: 'action',
-    label: 'Action'
-  }
+    label: 'Action',
+  },
 ]
 
 const { getProjects } = useProjectGet()
@@ -93,12 +98,22 @@ onMounted(async () => {
       :loading="false"
       empty-text="Project tidak ditemukan."
     >
+      <template #cell-no="{ rowIndex }">
+        {{ rowIndex + 1 }}
+      </template>
+
       <template #cell-demoUrl="{ value }">
         <a :href="String(value)" target="_blank" class="text-primary hover:underline"> Demo </a>
       </template>
 
       <template #cell-createdAt="{ value }">
         {{ new Date(String(value)).toLocaleDateString('id-ID') }}
+      </template>
+
+      <template #cell-action="{ item }">
+        <BaseButton variant="text" size="sm" :to="`${item.id}/edit`">
+          <Icon name="lucide:pen" />
+        </BaseButton>
       </template>
     </BaseTable>
 

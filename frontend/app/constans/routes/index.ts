@@ -1,0 +1,10 @@
+import { AUTH_LOGIN_ROUTE, HOME_ROUTE, MANAGEMENT_ROUTE, PORTOFOLIO_ROUTE } from './navigate'
+import { PAGE_TITLES } from './title'
+
+export const routes = {
+  HOME_ROUTE,
+  PORTOFOLIO_ROUTE,
+  MANAGEMENT_ROUTE,
+  AUTH_LOGIN_ROUTE,
+  PAGE_TITLES,
+}

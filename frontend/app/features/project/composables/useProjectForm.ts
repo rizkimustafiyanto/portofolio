@@ -1,49 +1,60 @@
-import { reactive } from 'vue'
-import type { Ref } from 'vue'
-import { createProjectSchema, type CreateProjectData } from '../schemas/create-schema'
+import { toast } from 'vue-sonner'
+
+import { createProjectSchema, type FormProjectData } from '../schemas/create-schema'
 import { useProjectStore } from '../stores/project-store'
 import { useProjectService } from '../services/project-service'
 import type { ActionProject } from '../types/project'
-import { toast } from 'vue-sonner'
 
 type UseProjectFormReturn = {
-  form: CreateProjectData
+  form: FormProjectData
   errors: Ref<Record<string, string>>
-  validate: (data: CreateProjectData) => boolean
+  validate: (data: FormProjectData) => boolean
   resetForm: () => void
-  create: (payload: ActionProject) => Promise<void>
+  save: (payload: ActionProject, id?: string) => Promise<void>
+  delete: (id: string) => Promise<void>
 }
 
 export function useProjectForm(): UseProjectFormReturn {
   const projectService = useProjectService()
   const store = useProjectStore()
 
-  const form = reactive<CreateProjectData>({
-    projectName: '',
-    description: '',
-    demoUrl: '',
-  })
+  const form = store.form
 
   const { errors, validate, clearErrors } = useZodForm(createProjectSchema)
 
   const resetForm = (): void => {
-    form.projectName = ''
-    form.description = ''
-    form.demoUrl = ''
+    store.resetForm()
     clearErrors()
   }
 
-  const create = async (payload: ActionProject) => {
+  const save = async (payload: ActionProject, id?: string): Promise<void> => {
     try {
-      const res = await projectService.create(payload)
+      if (id) {
+        const res = await projectService.update(id, payload)
 
-      store.projectDetail = res.create_project
-      store.getAll({ project: res.create_project })
+        store.upsertProject(res.updateProject)
+        store.fillForm(res.updateProject)
+      } else {
+        const res = await projectService.create(payload)
 
-      toast.success('Project Created')
+        store.upsertProject(res.createProject)
+        store.fillForm(res.createProject)
+      }
+      toast.success(id ? 'Project Updated' : 'Project Created')
     } catch (err) {
       toast.error(extractGraphqlError(err))
-      return
+    }
+  }
+
+  const deleteProject = async (id: string): Promise<void> => {
+    try {
+      await projectService.delete(id)
+
+      store.removeProject(id)
+
+      toast.success('Project Deleted')
+    } catch (err) {
+      toast.error(extractGraphqlError(err))
     }
   }
 
@@ -52,6 +63,7 @@ export function useProjectForm(): UseProjectFormReturn {
     errors,
     validate,
     resetForm,
-    create,
+    save,
+    delete: deleteProject,
   }
 }

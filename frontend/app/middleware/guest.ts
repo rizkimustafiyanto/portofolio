@@ -1,4 +1,4 @@
-import { MANAGEMENT_ROUTE, TOKEN_COOKIE_KEY } from '~/constans'
+import { routes, TOKEN_COOKIE_KEY } from '~/constans'
 import { useAuth } from '~/features/auth/composables/useAuth'
 import { useUiStore } from '~/stores/ui.store'
 
@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async () => {
 
   if (store.authChecked) {
     if (store.user) {
-      return navigateTo(MANAGEMENT_ROUTE)
+      return navigateTo(routes.MANAGEMENT_ROUTE)
     }
 
     return
@@ -24,7 +24,7 @@ export default defineNuxtRouteMiddleware(async () => {
     const isValid = await fetchMe()
 
     if (isValid) {
-      return navigateTo(MANAGEMENT_ROUTE)
+      return navigateTo(routes.MANAGEMENT_ROUTE)
     }
   } finally {
     ui.stopLoading()
