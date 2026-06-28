@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { theme } from '~/constans'
+import { routes, theme } from '~/constans'
 
 const route = useRoute()
 
 const pageTitle = computed(() => {
-  const currentPage = (route.meta?.title ||
-    route.name?.toString()?.replaceAll('-', ' ') ||
-    'Dashboard') as string
+  const name = route.name?.toString() || 'dashboard'
 
-  return toTitleCase(currentPage)
+  return routes.PAGE_TITLES[name] ?? toTitleCase(name.replaceAll('-', ' '))
 })
 </script>
 
