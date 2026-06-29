@@ -23,6 +23,9 @@ func Migrate(db *gorm.DB) {
 		err := db.Migrator().DropTable(
 			&auditlogModel.AuditLog{},
 			&projectModel.Project{},
+			&projectModel.ProjectDetail{},
+			&projectModel.ProjectResponsibility{},
+			&projectModel.ProjectResult{},
 			&authModel.User{},
 		)
 
@@ -36,6 +39,9 @@ func Migrate(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&authModel.User{},
 		&projectModel.Project{},
+		&projectModel.ProjectDetail{},
+		&projectModel.ProjectResponsibility{},
+		&projectModel.ProjectResult{},
 		&auditlogModel.AuditLog{},
 	)
 
