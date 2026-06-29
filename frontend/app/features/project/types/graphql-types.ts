@@ -1,5 +1,4 @@
-import type { ProjectPagination } from '~/types/pagination'
-import type { Project } from './project'
+import type { Project, ProjectPagination } from './project-get'
 
 export interface CreateResponse {
   createProject: Project

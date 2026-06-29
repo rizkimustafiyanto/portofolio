@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { theme } from '~/constans/theme'
+import { useProjectForm } from '../../composables/useProjectForm'
 import { useProjectGet } from '../../composables/useProjectGet'
 
 interface Props {
@@ -37,12 +38,34 @@ const pageDescription = computed(() =>
     : 'Keep your portfolio projects organized with a single reusable form.',
 )
 
+const projectForm = useProjectForm()
+
+const { loading, wrap } = useSubmitGuard()
+
 const { getProjectDetail } = useProjectGet()
 
-onMounted(async () => {
-  if (props.id) {
-    await getProjectDetail(props.id)
+const onSubmit = async () => {
+  if (!projectForm.validate(projectForm.form)) {
+    return
   }
+
+  await wrap(async () => {
+    if (props.id) {
+      await projectForm.save(props.id)
+      return
+    }
+
+    await projectForm.save()
+    projectForm.resetForm()
+  })
+}
+
+onMounted(async () => {
+  if (!props.id) {
+    return
+  }
+
+  await getProjectDetail(props.id)
 })
 </script>
 
@@ -53,22 +76,35 @@ onMounted(async () => {
         <BaseHeading :title="pageTitle" :description="pageDescription" />
 
         <BaseButton to="/management/projects" variant="filled">
-          <span aria-hidden="true" class="mr-2">&larr;</span>
+          <span class="mr-2">&larr;</span>
           Back to projects
         </BaseButton>
       </div>
     </div>
 
-    <BaseTabs v-model="activeTab" :items="tabs">
-      <template #default>
-        <div :class="['p-6', theme.card.base]">
-          <ProjectFormBasic v-if="activeTab === 'basic'" :id="props.id" />
+    <BaseForm as="form" :loading="loading" @submit="onSubmit">
+      <BaseTabs v-model="activeTab" :items="tabs">
+        <template #default>
+          <div :class="['space-y-6 p-6', theme.card.base]">
+            <ProjectFormBasic v-if="activeTab === 'basic'" :project-form="projectForm" />
 
-          <ProjectFormCaseStudy v-else-if="activeTab === 'case-study'" :id="id" />
+            <ProjectFormCaseStudy
+              v-else-if="activeTab === 'case-study'"
+              :project-form="projectForm"
+            />
 
-          <ProjectFormSettings v-else-if="activeTab === 'settings'" :id="id" />
-        </div>
-      </template>
-    </BaseTabs>
+            <ProjectFormSettings v-else-if="activeTab === 'settings'" :project-form="projectForm" />
+          </div>
+        </template>
+      </BaseTabs>
+
+      <div class="mt-6 flex justify-end gap-3">
+        <BaseButton variant="text" type="button" @click="projectForm.resetForm"> Reset </BaseButton>
+
+        <BaseButton variant="filled" type="submit">
+          {{ props.mode === 'edit' ? 'Update Project' : 'Save Project' }}
+        </BaseButton>
+      </div>
+    </BaseForm>
   </BaseSection>
 </template>

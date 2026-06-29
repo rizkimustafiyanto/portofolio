@@ -1,19 +1,28 @@
 import { defineStore } from 'pinia'
 import type { PaginationMeta } from '~/types/pagination'
-import type { Project } from '../types/project'
-import type { FormProjectData } from '../schemas/create-schema'
+import type { Project } from '../types/project-get'
+import type { ActionProject } from '../types/project-action'
 
 interface ProjectState {
   projects: Project[]
   meta: PaginationMeta
   projectDetail?: Project
-  form: FormProjectData
+  form: ActionProject
 }
 
-const initialForm = (): FormProjectData => ({
-  projectName: '',
+const initialForm = (): ActionProject => ({
+  slug: '',
+  title: '',
   description: '',
-  demoUrl: '',
+  role: '',
+  duration: '',
+  demoURL: '',
+  detail: {
+    problem: '',
+    solution: '',
+    responsibilities: [],
+    results: [],
+  },
 })
 
 export const useProjectStore = defineStore('project', {
@@ -109,15 +118,25 @@ export const useProjectStore = defineStore('project', {
 
     fillForm(project?: Project): void {
       const source = project ?? this.projectDetail
+
       if (!source) {
         this.resetForm()
         return
       }
 
       Object.assign(this.form, {
-        projectName: source.projectName ?? '',
+        slug: source.slug ?? '',
+        title: source.title ?? '',
         description: source.description ?? '',
-        demoUrl: source.demoUrl ?? '',
+        role: source.role ?? '',
+        duration: source.duration ?? '',
+        demoURL: source.demoURL ?? '',
+        detail: {
+          problem: source.detail?.problem ?? '',
+          solution: source.detail?.solution ?? '',
+          responsibilities: [...(source.detail?.responsibilities ?? [])],
+          results: [...(source.detail?.results ?? [])],
+        },
       })
     },
 

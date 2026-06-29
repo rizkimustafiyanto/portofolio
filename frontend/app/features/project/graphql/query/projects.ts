@@ -7,10 +7,29 @@ export const PROJECTS_QUERY = `
     ) {
       items{
         id
-        projectName
+        slug
+        title
         description
-        demoUrl
+        demoURL
+        role
+        duration
         createdAt
+        updatedAt
+        detail {
+          id
+          problem
+          solution
+          responsibilities {
+            id
+            responsibility
+            sortOrder
+          }
+          results {
+            id
+            result
+            sortOrder
+          }
+        }
       }
       meta{
         page

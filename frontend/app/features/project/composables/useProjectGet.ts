@@ -1,6 +1,6 @@
 import { useProjectStore } from '../stores/project-store'
 import { useProjectService } from '../services/project-service'
-import type { ProjectFilter } from '../types/project'
+import type { ProjectFilter } from '../types/project-get'
 import { toast } from 'vue-sonner'
 
 type UseProjectGetReturn = {

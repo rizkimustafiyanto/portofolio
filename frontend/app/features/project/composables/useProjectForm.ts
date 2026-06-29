@@ -1,16 +1,16 @@
 import { toast } from 'vue-sonner'
 
-import { createProjectSchema, type FormProjectData } from '../schemas/create-schema'
+import { createProjectSchema } from '../schemas/create-schema'
 import { useProjectStore } from '../stores/project-store'
 import { useProjectService } from '../services/project-service'
-import type { ActionProject } from '../types/project'
+import type { ActionProject } from '../types/project-action'
 
 type UseProjectFormReturn = {
-  form: FormProjectData
+  form: ActionProject
   errors: Ref<Record<string, string>>
-  validate: (data: FormProjectData) => boolean
+  validate: (data: ActionProject) => boolean
   resetForm: () => void
-  save: (payload: ActionProject, id?: string) => Promise<void>
+  save: (id?: string) => Promise<void>
   delete: (id: string) => Promise<void>
 }
 
@@ -27,19 +27,15 @@ export function useProjectForm(): UseProjectFormReturn {
     clearErrors()
   }
 
-  const save = async (payload: ActionProject, id?: string): Promise<void> => {
+  const save = async (id?: string): Promise<void> => {
     try {
-      if (id) {
-        const res = await projectService.update(id, payload)
+      const project = id
+        ? (await projectService.update(id, form)).updateProject
+        : (await projectService.create(form)).createProject
 
-        store.upsertProject(res.updateProject)
-        store.fillForm(res.updateProject)
-      } else {
-        const res = await projectService.create(payload)
+      store.upsertProject(project)
+      store.fillForm(project)
 
-        store.upsertProject(res.createProject)
-        store.fillForm(res.createProject)
-      }
       toast.success(id ? 'Project Updated' : 'Project Created')
     } catch (err) {
       toast.error(extractGraphqlError(err))

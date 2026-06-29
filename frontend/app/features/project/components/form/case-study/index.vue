@@ -1,68 +1,89 @@
 <script setup lang="ts">
-import { useProjectForm } from '~/features/project/composables/useProjectForm'
+import type { useProjectForm } from '~/features/project/composables/useProjectForm'
 
 interface Props {
-  id?: string
+  projectForm: ReturnType<typeof useProjectForm>
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  id: undefined,
-})
+const props = defineProps<Props>()
 
-const { form, errors, validate, resetForm, save } = useProjectForm()
+const { projectForm } = toRefs(props)
 
-const { loading, wrap } = useSubmitGuard()
-
-const onSubmit = async (): Promise<void> => {
-  if (!validate(form)) {
-    return
-  }
-
-  await wrap(async () => {
-    if (props.id) {
-      await save(form, props.id)
-      return
-    }
-
-    await save(form)
-    resetForm()
+const addResponsibility = () => {
+  projectForm.value.form.detail.responsibilities.push({
+    responsibility: '',
+    sortOrder: 0,
   })
+}
+
+const removeResponsibility = (index: number) => {
+  projectForm.value.form.detail.responsibilities.splice(index, 1)
+}
+
+const addResult = () => {
+  projectForm.value.form.detail.results.push({
+    result: '',
+    sortOrder: 0,
+  })
+}
+
+const removeResult = (index: number) => {
+  projectForm.value.form.detail.results.splice(index, 1)
 }
 </script>
 
 <template>
-  <div class="space-y-6 xl:col-span-8">
-    <BaseForm as="form" class="text-left" :loading="loading" @submit="onSubmit">
-      <BaseFormField label="Project name" required :error="errors.projectName">
-        <BaseInput
-          v-model="form.projectName"
-          placeholder="My Awesome App"
-          :error="errors.projectName"
-        />
-      </BaseFormField>
+  <div class="space-y-8">
+    <BaseFormField label="Problem" :error="projectForm.errors.value['detail.problem']">
+      <BaseTextArea
+        v-model="projectForm.form.detail.problem"
+        placeholder="Describe the problem this project solves..."
+      />
+    </BaseFormField>
 
-      <BaseFormField label="Description" required :error="errors.description">
-        <BaseTextArea
-          v-model="form.description"
-          placeholder="Describe what the project does..."
-          :error="errors.description"
-        />
-      </BaseFormField>
+    <BaseFormField label="Solution" :error="projectForm.errors.value['detail.solution']">
+      <BaseTextArea
+        v-model="projectForm.form.detail.solution"
+        placeholder="Explain your solution..."
+      />
+    </BaseFormField>
 
-      <BaseFormField
-        label="Project link"
-        required
-        :error="errors.demoUrl"
-        helper-text="You can paste a full URL or just a domain."
-      >
-        <BaseInput v-model="form.demoUrl" placeholder="myawesomeapp.com" :error="errors.demoUrl" />
-      </BaseFormField>
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <BaseText>Responsibilities</BaseText>
 
-      <div class="flex items-center justify-end gap-3">
-        <BaseButton variant="text" type="button" @click="resetForm"> Reset </BaseButton>
-
-        <BaseButton type="submit" variant="filled"> Save project </BaseButton>
+        <BaseButton type="button" size="sm" variant="text" @click="addResponsibility">
+          + Add
+        </BaseButton>
       </div>
-    </BaseForm>
+
+      <div
+        v-for="(item, index) in projectForm.form.detail.responsibilities"
+        :key="index"
+        class="flex gap-2"
+      >
+        <BaseInput v-model="item.responsibility" placeholder="Frontend Development" />
+
+        <BaseButton type="button" tone="danger" variant="text" @click="removeResponsibility(index)">
+          Remove
+        </BaseButton>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <BaseText>Results</BaseText>
+
+        <BaseButton type="button" size="sm" variant="text" @click="addResult"> + Add </BaseButton>
+      </div>
+
+      <div v-for="(item, index) in projectForm.form.detail.results" :key="index" class="flex gap-2">
+        <BaseInput v-model="item.result" placeholder="Reduced loading time by 40%" />
+
+        <BaseButton type="button" tone="danger" variant="text" @click="removeResult(index)">
+          Remove
+        </BaseButton>
+      </div>
+    </div>
   </div>
 </template>

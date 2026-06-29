@@ -1,5 +1,5 @@
 import { useGraphqlClient } from '~/services/graphql'
-import type { ActionProject, ProjectFilter } from '../types/project'
+import type { ProjectFilter } from '../types/project-get'
 import type {
   CreateResponse,
   ProjectResponse,
@@ -8,6 +8,7 @@ import type {
 } from '../types/graphql-types'
 import { CREATE_MUTATION, DELETE_MUTATION, PROJECT_ID_QUERY, PROJECTS_QUERY } from '../graphql'
 import { UPDATE_MUTATION } from '../graphql/mutation/update'
+import type { ActionProject } from '../types/project-action'
 
 export const useProjectService = () => {
   const client = useGraphqlClient()

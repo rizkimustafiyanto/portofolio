@@ -6,11 +6,29 @@ export const PROJECT_ID_QUERY = `
       id: $id
     ) {
       id
-      projectName
+      slug
+      title
       description
-      demoUrl
+      demoURL
+      role
+      duration
       createdAt
       updatedAt
+      detail {
+        id
+        problem
+        solution
+        responsibilities {
+          id
+          responsibility
+          sortOrder
+        }
+        results {
+          id
+          result
+          sortOrder
+        }
+      }
     }
   }
 `

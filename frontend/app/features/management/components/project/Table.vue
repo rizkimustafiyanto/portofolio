@@ -2,7 +2,7 @@
 import type { TableColumn } from '~/components/base/Table.vue'
 import { useProjectGet } from '~/features/project/composables/useProjectGet'
 import { useProjectStore } from '~/features/project/stores/project-store'
-import type { Project, ProjectFilter } from '~/features/project/types/project'
+import type { Project, ProjectFilter } from '~/features/project/types/project-get'
 
 const columns: TableColumn<Project>[] = [
   {
@@ -12,7 +12,7 @@ const columns: TableColumn<Project>[] = [
     cellClass: 'text-center',
   },
   {
-    key: 'projectName',
+    key: 'title',
     label: 'Project',
   },
   {
@@ -20,7 +20,7 @@ const columns: TableColumn<Project>[] = [
     label: 'Description',
   },
   {
-    key: 'demoUrl',
+    key: 'demoURL',
     label: 'Demo URL',
   },
   {
@@ -42,7 +42,7 @@ const meta = computed(() => store.meta)
 const filter = reactive<ProjectFilter>({
   page: 1,
   limit: 10,
-  projectName: '',
+  search: '',
 })
 
 const fetchData = async () => {
@@ -79,7 +79,7 @@ onMounted(async () => {
   <div class="space-y-6">
     <div class="flex flex-col gap-4 md:flex-row items-center">
       <BaseInput
-        v-model="filter.projectName"
+        v-model="filter.search"
         size="sm"
         placeholder="Cari project..."
         class="flex-1"
@@ -102,7 +102,7 @@ onMounted(async () => {
         {{ rowIndex + 1 }}
       </template>
 
-      <template #cell-demoUrl="{ value }">
+      <template #cell-demoURL="{ value }">
         <a :href="String(value)" target="_blank" class="text-primary hover:underline"> Demo </a>
       </template>
 
@@ -111,7 +111,7 @@ onMounted(async () => {
       </template>
 
       <template #cell-action="{ item }">
-        <BaseButton variant="text" size="sm" :to="`${item.id}/edit`">
+        <BaseButton variant="text" size="sm" :to="`projects/${item.id}/edit`">
           <Icon name="lucide:pen" />
         </BaseButton>
       </template>
