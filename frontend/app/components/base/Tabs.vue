@@ -34,6 +34,7 @@ const selectTab = (value: string, disabled?: boolean) => {
         v-for="tab in items"
         :key="tab.value"
         role="tab"
+        type="button"
         :aria-selected="modelValue === tab.value"
         :disabled="tab.disabled"
         :class="[
