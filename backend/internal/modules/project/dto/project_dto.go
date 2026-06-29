@@ -4,28 +4,44 @@ import globalDTO "backend/pkg/dto"
 
 type Project struct {
 	ID          uint
-	ProjectName string
+	Slug        string
+	Title       string
 	Description string
-	DemoUrl     *string
-	CreatedAt   string
-	UpdatedAt   string
+	Role        string
+	Duration    string
+	DemoURL     string
+
+	Detail *ProjectDetail
+
+	CreatedAt string
+	UpdatedAt string
 }
 
 type CreateProjectInput struct {
-	ProjectName string
+	Slug        string
+	Title       string
 	Description string
-	DemoUrl     *string
+	Role        string
+	Duration    string
+	DemoURL     string
+
+	Detail *CreateProjectDetailInput
 }
 
 type UpdateProjectInput struct {
-	ProjectName *string
+	Slug        *string
+	Title       *string
 	Description *string
-	DemoUrl     *string
+	Role        *string
+	Duration    *string
+	DemoURL     *string
+
+	Detail *UpdateProjectDetailInput
 }
 
 type ProjectFilterInput struct {
 	globalDTO.PaginationDTO
-	ProjectName *string
+	Search *string
 }
 
 type ProjectPaginationMeta struct {

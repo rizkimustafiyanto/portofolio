@@ -143,6 +143,24 @@ models:
   CreateProjectInput:
     model:
       - backend/internal/modules/project/dto.CreateProjectInput
+  CreateProjectDetailInput:
+    model:
+      - backend/internal/modules/project/dto.CreateProjectDetailInput
+  CreateProjectResponsibilityInput:
+    model:
+      - backend/internal/modules/project/dto.CreateProjectResponsibilityInput
+  CreateProjectResultInput:
+    model:
+      - backend/internal/modules/project/dto.CreateProjectResultInput
+  ProjectDetail:
+    model:
+      - backend/internal/modules/project/dto.ProjectDetail
+  ProjectResponsibility:
+    model:
+      - backend/internal/modules/project/dto.ProjectResponsibility
+  ProjectResult:
+    model:
+      - backend/internal/modules/project/dto.ProjectResult
   ProjectPaginationMeta:
     model:
       - backend/internal/modules/project/dto.ProjectPaginationMeta
@@ -158,6 +176,15 @@ models:
   UpdateProjectInput:
     model:
       - backend/internal/modules/project/dto.UpdateProjectInput
+  UpdateProjectDetailInput:
+    model:
+      - backend/internal/modules/project/dto.UpdateProjectDetailInput
+  UpdateProjectResponsibilityInput:
+    model:
+      - backend/internal/modules/project/dto.UpdateProjectResponsibilityInput
+  UpdateProjectResultInput:
+    model:
+      - backend/internal/modules/project/dto.UpdateProjectResultInput
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID

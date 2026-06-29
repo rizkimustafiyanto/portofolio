@@ -11,43 +11,69 @@ import (
 )
 
 type ProjectRepository struct {
-	DB *gorm.DB
+	db *gorm.DB
 }
 
 func NewProjectRepository(db *gorm.DB) *ProjectRepository {
-	return &ProjectRepository{DB: db}
+	return &ProjectRepository{
+		db: db,
+	}
 }
 
-func (r *ProjectRepository) CreateProject(
+func (r *ProjectRepository) executor(tx *gorm.DB) *gorm.DB {
+	if tx != nil {
+		return tx
+	}
+	return r.db
+}
+
+func (r *ProjectRepository) Create(
 	ctx context.Context,
+	tx *gorm.DB,
 	project *projectModel.Project,
 ) error {
-	return r.DB.WithContext(ctx).Create(project).Error
+	return r.executor(tx).
+		WithContext(ctx).
+		Create(project).
+		Error
 }
 
-func (r *ProjectRepository) UpdateProject(
+func (r *ProjectRepository) Update(
 	ctx context.Context,
+	tx *gorm.DB,
 	project *projectModel.Project,
 ) error {
-	return r.DB.WithContext(ctx).Save(project).Error
+	return r.executor(tx).
+		WithContext(ctx).
+		Model(project).
+		Updates(project).
+		Error
 }
 
-func (r *ProjectRepository) DeleteProjectByID(
+func (r *ProjectRepository) DeleteByID(
 	ctx context.Context,
+	tx *gorm.DB,
 	id uint,
 ) error {
-	return r.DB.WithContext(ctx).Delete(&projectModel.Project{}, id).Error
+	return r.executor(tx).
+		WithContext(ctx).
+		Delete(&projectModel.Project{}, id).
+		Error
 }
 
-func (r *ProjectRepository) GetProjectByID(
+func (r *ProjectRepository) GetByID(
 	ctx context.Context,
 	id uint,
 ) (*projectModel.Project, error) {
+
 	var project projectModel.Project
 
-	err := r.DB.WithContext(ctx).
-		Preload("User").
-		First(&project, id).Error
+	err := preloadProject(
+		r.db.WithContext(ctx),
+	).
+		First(&project, id).
+		Error
+
 	if err != nil {
 		return nil, err
 	}
@@ -55,40 +81,42 @@ func (r *ProjectRepository) GetProjectByID(
 	return &project, nil
 }
 
-func (r *ProjectRepository) GetProjects(
+func (r *ProjectRepository) GetAll(
 	ctx context.Context,
 	filter projectDTO.ProjectFilterInput,
 ) ([]projectModel.Project, int64, error) {
-	var projects []projectModel.Project
 
-	// Ensure limit and offset are valid
+	var (
+		projects []projectModel.Project
+		total    int64
+	)
+
 	limit := filter.Limit
 	if limit <= 0 {
-		limit = 10 // default limit
+		limit = 10
 	}
+
 	offset := filter.Offset()
 	if offset < 0 {
 		offset = 0
 	}
 
-	baseQuery := r.DB.WithContext(ctx).Model(&projectModel.Project{})
-	baseQuery = applyProjectFilters(baseQuery, filter)
+	query := applyProjectFilters(
+		r.db.WithContext(ctx).Model(&projectModel.Project{}),
+		filter,
+	)
 
-	var total int64
-	if err := baseQuery.Count(&total).Error; err != nil {
+	if err := query.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
 
-	query := r.DB.WithContext(ctx).
-		Model(&projectModel.Project{}).
-		Preload("User")
-	query = applyProjectFilters(query, filter)
-
-	err := query.
+	err := preloadProject(query).
 		Order("created_at DESC").
 		Limit(limit).
 		Offset(offset).
-		Find(&projects).Error
+		Find(&projects).
+		Error
+
 	if err != nil {
 		return nil, 0, err
 	}
@@ -96,13 +124,30 @@ func (r *ProjectRepository) GetProjects(
 	return projects, total, nil
 }
 
+func preloadProject(db *gorm.DB) *gorm.DB {
+	return db.
+		Preload("User").
+		Preload("Detail").
+		Preload("Detail.Responsibilities").
+		Preload("Detail.Results")
+}
+
 func applyProjectFilters(
 	query *gorm.DB,
 	filter projectDTO.ProjectFilterInput,
 ) *gorm.DB {
-	if filter.ProjectName != nil {
-		if value, ok := backendtext.NonEmpty(*filter.ProjectName); ok {
-			query = query.Where("project_name ILIKE ?", "%"+value+"%")
+
+	if filter.Search != nil {
+		if value, ok := backendtext.NonEmpty(*filter.Search); ok {
+
+			keyword := "%" + value + "%"
+
+			query = query.Where(
+				"slug ILIKE ? OR title ILIKE ? OR role ILIKE ?",
+				keyword,
+				keyword,
+				keyword,
+			)
 		}
 	}
 

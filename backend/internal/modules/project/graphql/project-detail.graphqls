@@ -1,0 +1,25 @@
+type ProjectDetail {
+  id: ID!
+
+  problem: String!
+  solution: String!
+
+  responsibilities: [ProjectResponsibility!]!
+  results: [ProjectResult!]!
+}
+
+input CreateProjectDetailInput {
+  problem: String!
+  solution: String!
+
+  responsibilities: [CreateProjectResponsibilityInput!]!
+  results: [CreateProjectResultInput!]!
+}
+
+input UpdateProjectDetailInput {
+  problem: String
+  solution: String
+
+  responsibilities: [UpdateProjectResponsibilityInput!]
+  results: [UpdateProjectResultInput!]
+}

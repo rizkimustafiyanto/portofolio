@@ -1,28 +1,44 @@
 type Project {
   id: ID!
-  projectName: String!
+  slug: String!
+  title: String!
   description: String!
-  demoUrl: String
+  role: String!
+  duration: String!
+  demoURL: String
+
+  detail: ProjectDetail
+
   createdAt: String!
   updatedAt: String!
 }
 
 input CreateProjectInput {
-  projectName: String!
-  description: String!
-  demoUrl: String
+  slug: String!
+  title: String!
+  description: String
+  role: String
+  duration: String
+  demoURL: String
+
+  detail: CreateProjectDetailInput
 }
 
 input UpdateProjectInput {
-  projectName: String
+  slug: String
+  title: String
   description: String
-  demoUrl: String
+  role: String
+  duration: String
+  demoURL: String
+
+  detail: UpdateProjectDetailInput
 }
 
 input ProjectFilterInput {
   page: Int
   limit: Int
-  projectName: String
+  search: String
 }
 
 type ProjectPaginationMeta {
@@ -42,6 +58,9 @@ type ProjectPagination {
 extend type Query {
   projects(filter: ProjectFilterInput): ProjectPagination!
   project(id: ID!): Project
+  projectDetail(projectId: ID!): ProjectDetail
+  projectResponsibilities(projectDetailId: ID!): [ProjectResponsibility!]!
+  projectResults(projectDetailId: ID!): [ProjectResult!]!
 }
 
 extend type Mutation {

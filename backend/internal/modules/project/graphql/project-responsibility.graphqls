@@ -1,0 +1,18 @@
+type ProjectResponsibility {
+  id: ID!
+
+  responsibility: String!
+  sortOrder: Int!
+}
+
+input CreateProjectResponsibilityInput {
+  responsibility: String!
+  sortOrder: Int
+}
+
+input UpdateProjectResponsibilityInput {
+  id: ID
+
+  responsibility: String
+  sortOrder: Int
+}

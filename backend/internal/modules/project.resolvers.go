@@ -7,13 +7,13 @@ package modules
 
 import (
 	"backend/internal/graphql/generated"
+	"backend/internal/graphql/mapper"
 	"backend/internal/middleware"
 	auditDTO "backend/internal/modules/audit/dto"
 	auditlogger "backend/internal/modules/audit/logger"
 	"backend/internal/modules/project/dto"
 	projectservice "backend/internal/modules/project/service"
 	"context"
-	"fmt"
 )
 
 // CreateProject is the resolver for the createProject field.
@@ -152,7 +152,7 @@ func (r *mutationResolver) DeleteProject(ctx context.Context, id string) (bool, 
 
 // ID is the resolver for the id field.
 func (r *projectResolver) ID(ctx context.Context, obj *dto.Project) (string, error) {
-	return fmt.Sprintf("%d", obj.ID), nil
+	return mapper.FormatUint(obj.ID), nil
 }
 
 // Projects is the resolver for the projects field.
@@ -161,7 +161,7 @@ func (r *queryResolver) Projects(ctx context.Context, filter *dto.ProjectFilterI
 	if filter != nil {
 		projectFilter = *filter
 	}
-	
+
 	if projectFilter.Page <= 0 {
 		projectFilter.Page = 1
 	}
@@ -221,6 +221,108 @@ func (r *queryResolver) Project(ctx context.Context, id string) (*dto.Project, e
 	})
 
 	return project, err
+}
+
+// ProjectDetail is the resolver for the projectDetail field.
+func (r *queryResolver) ProjectDetail(ctx context.Context, projectID string) (*dto.ProjectDetail, error) {
+	parsedProjectID, err := projectservice.ParseProjectID(projectID)
+	if err != nil {
+		auditlogger.Record(r.Resolver.AuditService, ctx, auditDTO.CreateAuditLogInput{
+			Action:       "GET_PROJECT_DETAIL",
+			Entity:       "PROJECT_DETAIL",
+			EntityID:     auditlogger.ParseUintPointer(projectID),
+			Status:       "FAILED",
+			ErrorMessage: err.Error(),
+		})
+		return nil, err
+	}
+
+	detail, err := r.Resolver.ProjectService.GetProjectDetailByProjectID(ctx, parsedProjectID)
+	status := "SUCCESS"
+	errorMessage := ""
+	if err != nil {
+		status = "FAILED"
+		errorMessage = err.Error()
+	}
+
+	auditlogger.Record(r.Resolver.AuditService, ctx, auditDTO.CreateAuditLogInput{
+		EntityID:     &parsedProjectID,
+		Action:       "GET_PROJECT_DETAIL",
+		Entity:       "PROJECT_DETAIL",
+		ResponseData: auditlogger.EncodeData(detail),
+		Status:       auditlogger.NormalizeStatus(status),
+		ErrorMessage: errorMessage,
+	})
+
+	return detail, err
+}
+
+// ProjectResponsibilities is the resolver for the projectResponsibilities field.
+func (r *queryResolver) ProjectResponsibilities(ctx context.Context, projectDetailID string) ([]*dto.ProjectResponsibility, error) {
+	parsedDetailID, err := projectservice.ParseProjectID(projectDetailID)
+	if err != nil {
+		auditlogger.Record(r.Resolver.AuditService, ctx, auditDTO.CreateAuditLogInput{
+			Action:       "LIST_PROJECT_RESPONSIBILITIES",
+			Entity:       "PROJECT_RESPONSIBILITY",
+			EntityID:     auditlogger.ParseUintPointer(projectDetailID),
+			Status:       "FAILED",
+			ErrorMessage: err.Error(),
+		})
+		return nil, err
+	}
+
+	responsibilities, err := r.Resolver.ProjectService.GetProjectResponsibilitiesByDetailID(ctx, parsedDetailID)
+	status := "SUCCESS"
+	errorMessage := ""
+	if err != nil {
+		status = "FAILED"
+		errorMessage = err.Error()
+	}
+
+	auditlogger.Record(r.Resolver.AuditService, ctx, auditDTO.CreateAuditLogInput{
+		EntityID:     &parsedDetailID,
+		Action:       "LIST_PROJECT_RESPONSIBILITIES",
+		Entity:       "PROJECT_RESPONSIBILITY",
+		ResponseData: auditlogger.EncodeData(responsibilities),
+		Status:       auditlogger.NormalizeStatus(status),
+		ErrorMessage: errorMessage,
+	})
+
+	return responsibilities, err
+}
+
+// ProjectResults is the resolver for the projectResults field.
+func (r *queryResolver) ProjectResults(ctx context.Context, projectDetailID string) ([]*dto.ProjectResult, error) {
+	parsedDetailID, err := projectservice.ParseProjectID(projectDetailID)
+	if err != nil {
+		auditlogger.Record(r.Resolver.AuditService, ctx, auditDTO.CreateAuditLogInput{
+			Action:       "LIST_PROJECT_RESULTS",
+			Entity:       "PROJECT_RESULT",
+			EntityID:     auditlogger.ParseUintPointer(projectDetailID),
+			Status:       "FAILED",
+			ErrorMessage: err.Error(),
+		})
+		return nil, err
+	}
+
+	results, err := r.Resolver.ProjectService.GetProjectResultsByDetailID(ctx, parsedDetailID)
+	status := "SUCCESS"
+	errorMessage := ""
+	if err != nil {
+		status = "FAILED"
+		errorMessage = err.Error()
+	}
+
+	auditlogger.Record(r.Resolver.AuditService, ctx, auditDTO.CreateAuditLogInput{
+		EntityID:     &parsedDetailID,
+		Action:       "LIST_PROJECT_RESULTS",
+		Entity:       "PROJECT_RESULT",
+		ResponseData: auditlogger.EncodeData(results),
+		Status:       auditlogger.NormalizeStatus(status),
+		ErrorMessage: errorMessage,
+	})
+
+	return results, err
 }
 
 // Page is the resolver for the page field.

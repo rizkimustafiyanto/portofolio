@@ -39,6 +39,8 @@ Jalankan:
 
 ```bash
 go mod download
+go install github.com/99designs/gqlgen@v0.17.90 
+go mod tidy
 ```
 
 ## Menjalankan Aplikasi

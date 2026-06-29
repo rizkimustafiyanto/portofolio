@@ -9,6 +9,7 @@ import (
 )
 
 type Env struct {
+	Environtment 	 string
 	AppPort        string
 	DBHost         string
 	DBPort         string
@@ -16,6 +17,7 @@ type Env struct {
 	DBPassword     string
 	DBName         string
 	DBSSLMode      string
+	DBStartReset	 bool
 	JWTSecret      string
 	Timezone       string
 	DBMaxOpenConns int
@@ -31,6 +33,7 @@ func LoadEnv() *Env {
 	}
 
 	return &Env{
+		Environtment: backendEnv.GetString("ENVIRONTMENT", "development"),
 		AppPort:        backendEnv.GetString("APP_PORT", "8080"),
 		DBHost:         backendEnv.GetString("DB_HOST", "localhost"),
 		DBPort:         backendEnv.GetString("DB_PORT", "5432"),
@@ -38,6 +41,7 @@ func LoadEnv() *Env {
 		DBPassword:     backendEnv.GetString("DB_PASSWORD", "password"),
 		DBName:         backendEnv.GetString("DB_NAME", "mydb"),
 		DBSSLMode:      backendEnv.GetString("DB_SSLMODE", "disable"),
+		DBStartReset: backendEnv.GetBool("DB_RESET_ON_START", false),
 		JWTSecret:      backendEnv.GetString("JWT_SECRET", "secret"),
 		Timezone:       backendEnv.GetString("DB_TIMEZONE", "UTC"),
 		DBMaxOpenConns: backendEnv.GetInt("DB_MAX_OPEN_CONNS", 10),

@@ -3,15 +3,10 @@ package main
 import (
 	"log"
 
+	"backend/internal/bootstrap"
 	"backend/internal/config"
 	"backend/internal/database"
 	"backend/internal/modules"
-	auditrepository "backend/internal/modules/audit/repository"
-	auditservice "backend/internal/modules/audit/service"
-	"backend/internal/modules/auth/repository"
-	"backend/internal/modules/auth/service"
-	projectrepository "backend/internal/modules/project/repository"
-	projectservice "backend/internal/modules/project/service"
 	"backend/internal/server"
 )
 
@@ -21,12 +16,9 @@ func main() {
 	db := database.ConnectDB(env)
 	database.Migrate(db)
 
-	authRepo := repository.NewAuthRepository(db)
-	authService := service.NewAuthService(authRepo, env)
-	auditRepo := auditrepository.NewAuditRepository(db)
-	auditService := auditservice.NewAuditService(auditRepo)
-	projectRepo := projectrepository.NewProjectRepository(db)
-	projectService := projectservice.NewProjectService(projectRepo)
+	authService := bootstrap.NewAuthService(db, env)
+	auditService := bootstrap.NewAuditService(db)
+	projectService := bootstrap.NewProjectService(db)
 
 	resolver := &modules.Resolver{
 		AuthService:    authService,

@@ -1,0 +1,18 @@
+type ProjectResult {
+  id: ID!
+
+  result: String!
+  sortOrder: Int!
+}
+
+input CreateProjectResultInput {
+  result: String!
+  sortOrder: Int
+}
+
+input UpdateProjectResultInput {
+  id: ID
+
+  result: String
+  sortOrder: Int
+}
